@@ -9,7 +9,7 @@ import CompanyLogo from '../../assets/company-logo.png'
 const AddExperience = () => {
     const [experience, setExperience] = useState([])
     const [form, setForm] = useState({
-        id:null,
+        id: '',
         position: '',
         company: '',
         work_month: '',
@@ -37,31 +37,33 @@ const AddExperience = () => {
 
     const handleAddExperience = (e) => {
         e.preventDefault()
+        console.log(form.id);
         // console.log(form);
         if (form.id) {
             const { id, created_at, updated_at, ...updateData } = form;
             api.put(`/experience/${form.id}`, {...updateData})
                 .then((res) => {
                     console.log(res);
-                    alert('Berhasil memperbarui data');
+                    alert('Berhasil memperbarui pengalaman');
                     getExperience();
                     resetForm()
                     // setSelectedExperience(null); // Clear selected experience after update
                 })
                 .catch((err) => {
                     console.log(err.response);
-                    alert('Gagal memperbarui data');
+                    alert('Gagal memperbarui pengalaman');
                 });
         } else {
-            api.post('/experience', form)
+            const { id, created_at, updated_at, ...updateData } = form;
+            api.post('/experience', updateData)
                 .then((res) => {
                     console.log(res)
-                    alert('Berhasil untuk memperbarui data')
+                    alert('Berhasil menambahkan pengalaman')
                     resetForm()
                 })
                 .catch((err) => {
                     console.log(err.response);
-                    alert('Gagal untuk memperbarui data')
+                    alert('Gagal menambahkan pengalaman')
                 })
         }
 
@@ -74,9 +76,10 @@ const AddExperience = () => {
         })
     }
 
-    const handleSelect = (selectedExperience) => {
+    const handleSelect = async (selectedExperience) => {
         
         setForm(selectedExperience);
+        // console.log(form);
         // setSelectedExperience(selected);
     }
 
