@@ -5,19 +5,21 @@ import Button from '../base/Button'
 import ExperienceContent from '../base/ExperienceContent'
 import CompanyLogo from '../../assets/company-logo.png'
 import PortfolioContent from '../base/PortfolioContent'
+import GreyUpload from '../../assets/grey-upload.svg'
+import GreyImage from '../../assets/grey-photo.svg'
+import GreySize from '../../assets/grey-expand.svg'
 
 
 const AddPortfolio = () => {
     const [portfolio, setPortfolio] = useState([])
+
     const [form, setForm] = useState({
         id: '',
         application_name: '',
         link_repository: '',
-        application: '',
+        application: 'Aplikasi Mobile',
         image: '',
     });
-
-    // const [selectedExperience, setSelectedExperience] = useState(null);
 
     const getPortfolio = () => {
         api.get(`/portfolio/`)
@@ -76,9 +78,7 @@ const AddPortfolio = () => {
     }
 
     const handleSelect = (selectedPortfolio) => {
-
         setForm(selectedPortfolio);
-        // setSelectedExperience(selected);
     }
 
     const handleDelete = (id) => {
@@ -101,7 +101,7 @@ const AddPortfolio = () => {
         })
     }
 
-    const handleUpload = (e) => {
+    const handleFile = (e) => {
         const file = e.target.files[0]
         const formData = new FormData()
         formData.append('file', file)
@@ -114,6 +114,7 @@ const AddPortfolio = () => {
                 console.log(err.response);
             });
     }
+
     return (
         <div className='flex flex-col gap-[30px]'>
             <div className='flex flex-col gap-8'>
@@ -133,16 +134,65 @@ const AddPortfolio = () => {
                         name="link_repository"
                         label="Link Repo"
                         placeholder="Github" />
-                    <Input
-                        type='text'
-                        value={form.application}
-                        onChange={handleChange}
-                        name="application"
-                        label="Tipe"
-                        placeholder="Tipe"
-                    />
-                    {form.image && <img src={form.image} />}
-                    <input type="file" onChange={handleUpload} />
+                    
+                    <div className='flex flex-col gap-1'>
+                        <label className='font-normal text-xs text-[#9EA0A5] pl-[5px]'>Tipe</label>
+                        <div className='flex items-center gap-4'>
+                            <label className={form.application === 'Aplikasi Mobile' ? "flex items-center border border-[#E2E5ED] rounded-lg p-[15px] font-semibold text-sm text-[#46505C] accent-[#5E50A1]" : "flex items-center p-[15px] font-normal text-sm text-[#9EA0A5]"}>
+                                <input
+                                    type='radio'
+                                    name='application'
+                                    value='Aplikasi Mobile'
+                                    checked={form.application === 'Aplikasi Mobile'}
+                                    onChange={handleChange}
+                                    className='mr-2 size-4'
+                                />
+                                Aplikasi Mobile
+                            </label>
+                            <label className={form.application === 'Aplikasi Web' ? "flex items-center border border-[#E2E5ED] rounded-lg p-[15px] font-semibold text-sm text-[#46505C] accent-[#5E50A1]" : "flex items-center p-[15px] font-normal text-sm text-[#9EA0A5]"}>
+                                <input
+                                    type='radio'
+                                    name='application'
+                                    value='Aplikasi Web'
+                                    checked={form.application === 'Aplikasi Web'}
+                                    onChange={handleChange}
+                                    className='mr-2'
+                                />
+                                Aplikasi Web
+                            </label>
+                        </div>
+                    </div>
+
+                    <label htmlFor="upload-file" className=" flex flex-col gap-1 w-full">
+                        <p className='font-normal text-xs text-[#9EA0A5] pl-[5px]'>Upload gambar</p>
+                        <input type="file" id="upload-file" className='hidden' onChange={handleFile} />
+                        <div style={{ backgroundImage: `url(${form.image})` }} className={form.image ? "rounded-lg w-full cursor-pointer h-80 bg-cover" : "p-12 flex flex-col items-center gap-5 border border-[#E2E5ED] rounded-lg w-full cursor-pointer"}>
+                                <div className={form.image ? 'hidden' : 'flex flex-col gap-10'}>
+                                    <div className="flex flex-col items-center gap-3">
+                                        <img src={GreyUpload} className='size-[114px]' />
+                                        <p className="font-normal text-sm text-[#1F2A36]">Drag & Drop untuk Upload Gambar Aplikasi</p>
+                                        <p className="font-normal text-xs text-[#1F2A36]">Atau cari untuk mengupload file dari direktorimu.</p>
+                                    </div>
+                                    <div className='flex gap-10'>
+                                        <div className="flex items-center gap-3">
+                                            <img src={GreyImage} className='size-8' />
+                                            <div className='flex flex-col gap-1 font-normal text-xs text-[#1F2A36]'>
+                                                <p>High-Res Image</p>
+                                                <p>PNG, JPG or GIF</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center gap-3">
+                                            <img src={GreySize} className='size-8' />
+                                            <div className='flex flex-col gap-1 font-normal text-xs text-[#1F2A36]'>
+                                                <p>Size</p>
+                                                <p>1080x1920 or 600x800</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </label>
+
                 </div >
                 <div className='border-t border-[#E2E5ED] pt-[30px]'>
                     <Button

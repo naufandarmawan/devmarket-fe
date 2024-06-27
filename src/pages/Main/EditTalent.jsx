@@ -34,7 +34,7 @@ const EditTalent = () => {
     photo: '',
   });
 
-  useEffect(() => {
+  const getProfile = () => {
     api.get(`/workers/${id}`)
       .then((res) => {
         const result = res.data.data
@@ -52,6 +52,10 @@ const EditTalent = () => {
       .catch((err) => {
         console.log(err.response);
       })
+  }
+
+  useEffect(() => {
+    getProfile()
   }, [])
 
   const navigate = useNavigate()
@@ -106,7 +110,7 @@ const EditTalent = () => {
   //   })
   // }
 
-  const handleUpload = (e) => {
+  const handlePhoto = (e) => {
     const photo = e.target.files[0]
     const formData = new FormData()
     formData.append('photo', photo)
@@ -121,6 +125,7 @@ const EditTalent = () => {
     api.put(`/workers/profile/photo`, formData)
       .then((res) => {
         console.log(res);
+        getProfile()
       })
       .catch((err) => {
         console.log(err.response);
@@ -140,11 +145,14 @@ const EditTalent = () => {
           <div className="flex flex-col basis-4/12 gap-[34px] h-fit ">
             <div className="flex flex-col gap-5 items-center p-[30px] bg-[#FFFFFF] rounded-lg">
               <ProfileImage image={profile.photo} />
-              <input type="file" onChange={handleUpload} />
-              {/* <div className='flex gap-[6px] items-center cursor-pointer' onClick={handleEdit}>
-                <img src={GreyEdit} className='h-[16px]' />
-                <p className='font-semibold text-[22px] text-[#9EA0A5]'>Edit</p>
-              </div> */}
+              <label htmlFor="upload-photo">
+                <input type="file" id="upload-photo" className='hidden' onChange={handlePhoto} />
+                <div className='flex gap-[6px] items-center cursor-pointer'>
+                  <img src={GreyEdit} className='h-[16px]' />
+                  <p className='font-semibold text-[22px] text-[#9EA0A5]'>Edit</p>
+                </div>
+              </label>
+
               <div className='flex flex-col gap-[13px] w-full'>
                 <ProfileName name={profile.name} />
                 <ProfileJob job={profile.job_desk} />
