@@ -5,12 +5,13 @@ import { Link, useNavigate } from 'react-router-dom'
 import Input from '../../components/base/Input'
 import Button from '../../components/base/Button'
 import api from '../../configs/api'
-import { login } from '../../configs/redux/action/authAction'
-import { useDispatch } from "react-redux"
+import { ToastContainer, toast } from 'react-toastify';
+// import { login } from '../../configs/redux/action/authAction'
+// import { useDispatch } from "react-redux"
 
 const Login = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -18,7 +19,20 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault()
-    dispatch(login(form, navigate))
+    // dispatch(login(form, navigate))
+    api.post('/auth/login', form)
+      .then((res) => {
+        const { token, refreshToken } = res.data.data
+        localStorage.setItem('token', token)
+        localStorage.setItem('refreshToken', refreshToken)
+        toast.success(`Login berhasil. Selamat datang!`)
+        navigate('/')
+      })
+      .catch((err) => {
+        console.log(err.response);
+        const error = err.response.data
+        toast.error(`Anda gagal login - ${error.message}`)
+      })
   }
 
   const handleChange = (e) => {
@@ -61,10 +75,10 @@ const Login = () => {
               <div className="flex flex-col gap-4">
                 <Link className="text-end font-normal text-base text-[#1F2A36]" to="/resetpassword">Lupa kata sandi?</Link>
                 {/* <Link className="text-end font-normal text-base text-[#FBB017]" to="/resetpassword">Lupa kata sandi?</Link> */}
-                <Button variant='primary-yellow' onClick={handleLogin} text='Masuk'/>
+                <Button variant='primary-yellow' onClick={handleLogin} text='Masuk' />
                 <p className="flex flex-col gap-2 text-center font-normal text-base text-[#1F2A36]">Anda belum punya akun?
-                <Link className="text-[#FBB017]" to="/register-talent">Daftar sebagai talent</Link>
-                <Link className="text-[#FBB017]" to="/register-recruiter">Daftar sebagai recruiter</Link>
+                  <Link className="text-[#FBB017]" to="/register-talent">Daftar sebagai talent</Link>
+                  <Link className="text-[#FBB017]" to="/register-recruiter">Daftar sebagai recruiter</Link>
                 </p>
               </div>
             </FormContainer>

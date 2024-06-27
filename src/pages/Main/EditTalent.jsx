@@ -99,12 +99,12 @@ const EditTalent = () => {
     })
   }
 
-  const handleEdit = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value
-    })
-  }
+  // const handleEdit = (e) => {
+  //   setForm({
+  //     ...form,
+  //     [e.target.name]: e.target.value
+  //   })
+  // }
 
   const handleUpload = (e) => {
     const photo = e.target.files[0]

@@ -5,61 +5,43 @@ import Tag from '../base/Tag'
 import api from '../../configs/api'
 import RemoveIcon from '../../assets/grey-arrow-left.svg'
 
-import { addSkill, deleteSkill, getSkills } from '../../configs/redux/action/skillAction'
-import { useDispatch, useSelector } from 'react-redux'
-
 const AddSkill = () => {
     const [skill, setSkill] = useState('')
-    // const [mySkill, setMySkill] = useState([])
-    const mySkill = useSelector((state)=>state.skill.mySkill)
-    const dispatch = useDispatch()
+    const [mySkill, setMySkill] = useState([])
+
+    const getSkill = () => {
+        api.get('/skills')
+            .then((res) => {
+                const skills = res.data.data
+                setMySkill(skills)
+            })
+    }
 
     const handleSkill = () => {
-        dispatch(addSkill(skill));
-        setSkill('')
-    };
+        api.post(`/skills`,
+            { skill_name: skill })
+            .then((res) => {
+                setSkill('')
+                getSkill()
+            })
+            .catch((err) => {
+                console.log(err.response);
+            })
+    }
 
     const handleDelete = (id) => {
-        dispatch(deleteSkill(id));
-    };
+        api.delete(`/skills/${id}`)
+            .then(() => {
+                getSkill()
+            })
+            .catch((err) => {
+                console.log(err.response);
+            })
+    }
 
     useEffect(() => {
-        dispatch(getSkills());
-    }, []);
-
-    // const getSkill = () => {
-    //     api.get('/skills')
-    //         .then((res) => {
-    //             const skills = res.data.data
-    //             setMySkill(skills)
-    //         })
-    // }
-
-    // const handleSkill = () => {
-    //     api.post(`/skills`,
-    //         { skill_name: skill })
-    //         .then((res) => {
-    //             setSkill('')
-    //             getSkill()
-    //         })
-    //         .catch((err) => {
-    //             console.log(err.response);
-    //         })
-    // }
-
-    // const handleDelete = (id) => {
-    //     api.delete(`/skills/${id}`)
-    //         .then(() => {
-    //             getSkill()
-    //         })
-    //         .catch((err) => {
-    //             console.log(err.response);
-    //         })
-    // }
-
-    // useEffect(() => {
-    //     getSkill()
-    // }, [])
+        getSkill()
+    }, [])
 
 
     return (

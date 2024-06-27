@@ -5,25 +5,44 @@ import { Link, useNavigate } from 'react-router-dom'
 import Input from '../../components/base/Input'
 import Button from '../../components/base/Button'
 import api from '../../configs/api'
-import { registerRecruiter } from '../../configs/redux/action/authAction'
-import { useDispatch } from "react-redux"
+import { ToastContainer, toast } from 'react-toastify';
+// import { registerRecruiter } from '../../configs/redux/action/authAction'
+// import { useDispatch } from "react-redux"
 
 
 const RegisterRecruiter = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const [form, setForm] = useState({
     email: '',
-    password:'',
-    name:'',
-    company:'',
-    position:'',
-    phone:''
+    password: '',
+    name: '',
+    company: '',
+    position: '',
+    phone: ''
   })
 
   const handleRegister = (e) => {
     e.preventDefault()
-    dispatch(registerRecruiter(form, navigate))
+    // dispatch(registerRecruiter(form, navigate))
+    api.post('/recruiters/register', {
+      email: form.email,
+      password: form.password,
+      name: form.name,
+      company: form.company,
+      position: form.position,
+      phone: form.phone
+    })
+      .then((res) => {
+        console.log(res.response);
+        toast.success(`Register berhasil. Silakan Login`)
+        navigate('/login')
+      })
+      .catch((err) => {
+        console.log(err.response);
+        const error = err.response.data
+        toast.error(`Anda gagal register - ${error.message}`)
+      })
   }
 
   const handleChange = (e) => {
@@ -96,7 +115,7 @@ const RegisterRecruiter = () => {
                 />
               </div>
               <div className="flex flex-col gap-4">
-                <Button variant='primary-yellow' onClick={handleRegister} text='Daftar'/>
+                <Button variant='primary-yellow' onClick={handleRegister} text='Daftar' />
                 <p className="text-center font-normal text-base text-[#1F2A36]">Anda sudah punya akun? <Link className="text-[#FBB017]" to="/login">Masuk disini</Link></p>
               </div>
             </FormContainer>

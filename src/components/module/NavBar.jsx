@@ -8,6 +8,8 @@ import api from '../../configs/api'
 
 const NavBar = () => {
 
+    const navigate = useNavigate()
+
     const [myProfile, setMyProfile] = useState({})
     const [myRole, setMyRole] = useState('')
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,6 +27,7 @@ const NavBar = () => {
                 localStorage.removeItem('refreshToken')
                 alert(res.data.message);
                 setIsLoggedIn(false);
+                navigate("/")
             })
             .catch((err) => {
                 console.log(err.response);
@@ -124,8 +127,6 @@ const NavBar = () => {
         }
 
     }, [isLoggedIn, myRole])
-
-    const navigate = useNavigate()
 
     const handleProfile = () => {
         if (myRole === 'recruiter') {

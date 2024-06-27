@@ -5,24 +5,40 @@ import { Link, useNavigate } from 'react-router-dom'
 import Input from '../../components/base/Input'
 import Button from '../../components/base/Button'
 import api from '../../configs/api'
-import { registerTalent } from '../../configs/redux/action/authAction'
-import { useDispatch } from "react-redux"
-
+import { ToastContainer, toast } from 'react-toastify';
+// import { registerTalent } from '../../configs/redux/action/authAction'
+// import { useDispatch } from "react-redux"
 
 
 const RegisterTalent = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const [form, setForm] = useState({
     email: '',
-    password:'',
-    name:'',
-    phone:''
+    password: '',
+    name: '',
+    phone: ''
   })
 
   const handleRegister = (e) => {
     e.preventDefault()
-    dispatch(registerTalent(form, navigate))
+    // dispatch(registerTalent(form, navigate))
+    api.post('/workers/register', {
+      email: form.email,
+      password: form.password,
+      name: form.name,
+      phone: form.phone
+    })
+      .then((res) => {
+        console.log(res.response);
+        toast.success(`Register berhasil. Silakan Login`)
+        navigate('/login')
+      })
+      .catch((err) => {
+        console.log(err.response);
+        const error = err.response.data
+        toast.error(`Anda gagal register - ${error.message}`)
+      })
   }
 
   const handleChange = (e) => {
@@ -45,7 +61,7 @@ const RegisterTalent = () => {
           <div className='flex flex-col basis-1/2'>
             <FormContainer formTitle='Halo, Pewpeople' formDescription='Lorem ipsum dolor sit amet, consectetur adipiscing elit. In euismod ipsum et dui rhoncus auctor.'>
               <div className="flex flex-col gap-4">
-              <Input
+                <Input
                   type='text'
                   value={form.name}
                   onChange={handleChange}
@@ -79,7 +95,7 @@ const RegisterTalent = () => {
                 />
               </div>
               <div className="flex flex-col gap-4">
-                <Button variant='primary-yellow' onClick={handleRegister} text='Daftar'/>
+                <Button variant='primary-yellow' onClick={handleRegister} text='Daftar' />
                 <p className="text-center font-normal text-base text-[#1F2A36]">Anda sudah punya akun? <Link className="text-[#FBB017]" to="/login">Masuk disini</Link></p>
               </div>
             </FormContainer>
