@@ -5,56 +5,38 @@ import GreyBell from '../../assets/grey-bell.svg'
 import GreyMail from '../../assets/grey-mail.svg'
 import Person1 from '../../assets/person-1.png'
 import api from '../../configs/api'
+import { useDispatch, useSelector } from 'react-redux'
+import { checkRole, logout } from '../../configs/redux/authSlice'
 
 const NavBar = () => {
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { token, role } = useSelector((state) => state.auth);
 
-    const [myProfile, setMyProfile] = useState({})
-    const [myRole, setMyRole] = useState('')
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [myProfile, setMyProfile] = useState({});
     const [showPopover, setShowPopover] = useState(false);
-    const [notification, setNotification] = useState([])
+    const [notification, setNotification] = useState([]);
 
     const togglePopover = () => {
         setShowPopover(!showPopover);
     };
 
     const handleLogOut = () => {
-        api.get(`/auth/logout`)
-            .then((res) => {
-                localStorage.removeItem('token')
-                localStorage.removeItem('refreshToken')
-                alert(res.data.message);
-                setIsLoggedIn(false);
-                navigate("/")
-            })
-            .catch((err) => {
-                console.log(err.response);
-            })
-    }
-
+        dispatch(logout());
+        navigate('/');
+    };
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
         if (token) {
-            setIsLoggedIn(true);
-        } else {
-            setIsLoggedIn(false);
+            dispatch(checkRole());
         }
-        if (isLoggedIn) {
-            // Fetch role and profile
-            api.get(`/auth/check-role`)
-                .then((res) => {
-                    const result = res.data.data.data.role;
-                    setMyRole(result);
-                })
-                .catch((err) => {
-                    console.log(err.response);
-                });
+    }, [token, dispatch]);
 
-            if (myRole === 'recruiter') {
-                api.get(`/recruiters/profile`)
+    useEffect(() => {
+        if (role) {
+            if (role === 'recruiter') {
+                api.get('/recruiters/profile')
                     .then((res) => {
                         const result = res.data.data;
                         setMyProfile(result);
@@ -63,7 +45,7 @@ const NavBar = () => {
                         console.log(err.response);
                     });
             } else {
-                api.get(`/workers/profile`)
+                api.get('/workers/profile')
                     .then((res) => {
                         const result = res.data.data;
                         setMyProfile(result);
@@ -72,70 +54,131 @@ const NavBar = () => {
                         console.log(err.response);
                     });
             }
+
+            if (role === 'recruiter') {
+                api.get('/hire/recruiters')
+                    .then((res) => {
+                        const result = res.data.data;
+                        setNotification(result);
+                    })
+                    .catch((err) => {
+                        console.log(err.response);
+                    });
+            } else {
+                api.get('/hire/workers')
+                    .then((res) => {
+                        const result = res.data.data;
+                        setNotification(result);
+                    })
+                    .catch((err) => {
+                        console.log(err.response);
+                    });
+            }
         }
-
-        // api.get(`/auth/check-role`)
-        //     .then((res) => {
-        //         const result = res.data.data.data.role
-        //         console.log(result);
-        //         setMyRole(result)
-        //     })
-        //     .catch((err) => {
-        //         console.log(err.response);
-        //     })
-
-        // if (myRole === 'recruiter') {
-        //     api.get(`/recruiters/profile`)
-        //         .then((res) => {
-        //             const result = res.data.data
-        //             console.log(result);
-        //             setMyProfile(result)
-        //         })
-        //         .catch((err) => {
-        //             console.log(err.response);
-        //         })
-        // } else {
-        //     api.get(`/workers/profile`)
-        //         .then((res) => {
-        //             const result = res.data.data
-        //             console.log(result);
-        //             setMyProfile(result)
-        //         })
-        //         .catch((err) => {
-        //             console.log(err.response);
-        //         })
-        // }
-
-        if (myRole === 'recruiter') {
-            api.get(`/hire/recruiters`)
-                .then((res) => {
-                    const result = res.data.data
-                    setNotification(result)
-                })
-                .catch((err) => {
-                    console.log(err.response);
-                })
-        } else {
-            api.get(`/hire/workers`)
-                .then((res) => {
-                    const result = res.data.data
-                    setNotification(result)
-                })
-                .catch((err) => {
-                    console.log(err.response);
-                })
-        }
-
-    }, [isLoggedIn, myRole])
+    }, [role]);
 
     const handleProfile = () => {
-        if (myRole === 'recruiter') {
-            navigate(`/company/profile/`)
+        if (role === 'recruiter') {
+            navigate(`/company/profile/`);
         } else {
-            navigate(`/talent/profile/${myProfile.id}`)
+            navigate(`/talent/profile/${myProfile.id}`);
         }
+    };
 
-    }
+    // const navigate = useNavigate()
+
+    // const [myProfile, setMyProfile] = useState({})
+    // const [myRole, setMyRole] = useState('')
+    // const [isLoggedIn, setIsLoggedIn] = useState(false);
+    // const [showPopover, setShowPopover] = useState(false);
+    // const [notification, setNotification] = useState([])
+
+    // const togglePopover = () => {
+    //     setShowPopover(!showPopover);
+    // };
+
+    // const handleLogOut = () => {
+    //     api.get(`/auth/logout`)
+    //         .then((res) => {
+    //             localStorage.removeItem('token')
+    //             localStorage.removeItem('refreshToken')
+    //             alert(res.data.message);
+    //             setIsLoggedIn(false);
+    //             navigate("/")
+    //         })
+    //         .catch((err) => {
+    //             console.log(err.response);
+    //         })
+    // }
+
+
+    // useEffect(() => {
+    //     const token = localStorage.getItem('token');
+    //     if (token) {
+    //         setIsLoggedIn(true);
+    //     } else {
+    //         setIsLoggedIn(false);
+    //     }
+    //     if (isLoggedIn) {
+    //         api.get(`/auth/check-role`)
+    //             .then((res) => {
+    //                 const result = res.data.data.data.role;
+    //                 setMyRole(result);
+    //             })
+    //             .catch((err) => {
+    //                 console.log(err.response);
+    //             });
+
+    //         if (myRole === 'recruiter') {
+    //             api.get(`/recruiters/profile`)
+    //                 .then((res) => {
+    //                     const result = res.data.data;
+    //                     setMyProfile(result);
+    //                 })
+    //                 .catch((err) => {
+    //                     console.log(err.response);
+    //                 });
+    //         } else {
+    //             api.get(`/workers/profile`)
+    //                 .then((res) => {
+    //                     const result = res.data.data;
+    //                     setMyProfile(result);
+    //                 })
+    //                 .catch((err) => {
+    //                     console.log(err.response);
+    //                 });
+    //         }
+    //     }
+
+    //     if (myRole === 'recruiter') {
+    //         api.get(`/hire/recruiters`)
+    //             .then((res) => {
+    //                 const result = res.data.data
+    //                 setNotification(result)
+    //             })
+    //             .catch((err) => {
+    //                 console.log(err.response);
+    //             })
+    //     } else {
+    //         api.get(`/hire/workers`)
+    //             .then((res) => {
+    //                 const result = res.data.data
+    //                 setNotification(result)
+    //             })
+    //             .catch((err) => {
+    //                 console.log(err.response);
+    //             })
+    //     }
+
+    // }, [isLoggedIn, myRole])
+
+    // const handleProfile = () => {
+    //     if (myRole === 'recruiter') {
+    //         navigate(`/company/profile/`)
+    //     } else {
+    //         navigate(`/talent/profile/${myProfile.id}`)
+    //     }
+    // }
 
     const preLogin =
         <div className="px-[150px] py-8 bg-white max-lg:p-8">
@@ -180,8 +223,8 @@ const NavBar = () => {
                                 className="absolute w-[300px] flex flex-col gap-3 bg-white border border-gray-300 shadow rounded p-4 z-10 top-full mt-2 left-1/2 transform -translate-x-1/2"
                             >
                                 {notification.map((item) => (
-                                    <div>
-                                        {myRole === 'recruiter' ? `Hi ${item.recruiter_name}, you have successfully sent a message for ${item.worker_name}, a ${item.worker_job_desk} at ${item.worker_workplace} for ${item.message_purpose} opportunity.` : `Hi ${item.worker_name}, you have a new ${item.message_purpose} opportunity from ${item.recruiter_name}, ${item.recruiter_position} at ${item.recruiter_company}. Please check your email for details.`}
+                                    <div key={item.id}>
+                                        {role === 'recruiter' ? `Hi ${item.recruiter_name}, you have successfully sent a message for ${item.worker_name}, a ${item.worker_job_desk} at ${item.worker_workplace} for ${item.message_purpose} opportunity.` : `Hi ${item.worker_name}, you have a new ${item.message_purpose} opportunity from ${item.recruiter_name}, ${item.recruiter_position} at ${item.recruiter_company}. Please check your email for details.`}
                                     </div>
                                 ))}
                             </div>
@@ -198,7 +241,7 @@ const NavBar = () => {
 
     const getLocation = useLocation();
 
-    if (getLocation.pathname === '/' && isLoggedIn) {
+    if (getLocation.pathname === '/' && token) {
         return landingPostLogin
     } else if (getLocation.pathname === '/') {
         return preLogin

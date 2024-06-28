@@ -6,12 +6,16 @@ import Input from '../../components/base/Input'
 import Button from '../../components/base/Button'
 import api from '../../configs/api'
 import { ToastContainer, toast } from 'react-toastify';
-// import { login } from '../../configs/redux/action/authAction'
-// import { useDispatch } from "react-redux"
+
+import { useDispatch} from "react-redux"
+import { login } from '../../configs/redux/authSlice'
 
 const Login = () => {
+
   const navigate = useNavigate()
-  // const dispatch = useDispatch()
+
+  const dispatch = useDispatch()
+
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -19,20 +23,20 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault()
-    // dispatch(login(form, navigate))
-    api.post('/auth/login', form)
-      .then((res) => {
-        const { token, refreshToken } = res.data.data
-        localStorage.setItem('token', token)
-        localStorage.setItem('refreshToken', refreshToken)
-        toast.success(`Login berhasil. Selamat datang!`)
-        navigate('/')
-      })
-      .catch((err) => {
-        console.log(err.response);
-        const error = err.response.data
-        toast.error(`Anda gagal login - ${error.message}`)
-      })
+    dispatch(login({form, navigate}))
+    // api.post('/auth/login', form)
+    //   .then((res) => {
+    //     const { token, refreshToken } = res.data.data
+    //     localStorage.setItem('token', token)
+    //     localStorage.setItem('refreshToken', refreshToken)
+    //     toast.success(`Login berhasil. Selamat datang!`)
+    //     navigate('/')
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.response);
+    //     const error = err.response.data
+    //     toast.error(`Anda gagal login - ${error.message}`)
+    //   })
   }
 
   const handleChange = (e) => {
