@@ -5,43 +5,61 @@ import Tag from '../base/Tag'
 import api from '../../configs/api'
 import RemoveIcon from '../../assets/grey-arrow-left.svg'
 
-const AddSkill = () => {
-    const [skill, setSkill] = useState('')
-    const [mySkill, setMySkill] = useState([])
+import { useDispatch, useSelector } from 'react-redux';
+import { getSkill, addSkill, deleteSkill } from '../../configs/redux/skillsSlice';
 
-    const getSkill = () => {
-        api.get('/skills')
-            .then((res) => {
-                const skills = res.data.data
-                setMySkill(skills)
-            })
-    }
+
+const AddSkill = () => {
+
+    const dispatch = useDispatch();
+
+    const [skillForm, setSkillForm] = useState('')
+
+    // const [mySkill, setMySkill] = useState([])
+    const mySkill = useSelector((state) => state.skills.skills)
+
+
+    // const getSkill = () => {
+    //     api.get('/skills')
+    //         .then((res) => {
+    //             const skills = res.data.data
+    //             setMySkill(skills)
+    //         })
+    // }
 
     const handleSkill = () => {
-        api.post(`/skills`,
-            { skill_name: skill })
-            .then((res) => {
-                setSkill('')
-                getSkill()
-            })
-            .catch((err) => {
-                console.log(err.response);
-            })
+        // api.post(`/skills`,
+        //     { skill_name: skill })
+        //     .then((res) => {
+        //         setSkill('')
+        //         getSkill()
+        //     })
+        //     .catch((err) => {
+        //         console.log(err.response);
+        //     })
+        dispatch(addSkill(skillForm));
+        setSkillForm('');
     }
 
     const handleDelete = (id) => {
-        api.delete(`/skills/${id}`)
-            .then(() => {
-                getSkill()
-            })
-            .catch((err) => {
-                console.log(err.response);
-            })
+        // api.delete(`/skills/${id}`)
+        //     .then(() => {
+        //         getSkill()
+        //     })
+        //     .catch((err) => {
+        //         console.log(err.response);
+        //     })
+
+        dispatch(deleteSkill(id));
     }
 
+    // useEffect(() => {
+    //     getSkill()
+    // }, [])
+
     useEffect(() => {
-        getSkill()
-    }, [])
+        dispatch(getSkill())
+    }, [dispatch])
 
 
     return (
@@ -52,15 +70,15 @@ const AddSkill = () => {
                     type='text'
                     label=''
                     placeholder='Masukkan skill'
-                    value={skill}
-                    onChange={(e) => setSkill(e.target.value)}
+                    value={skillForm}
+                    onChange={(e) => setSkillForm(e.target.value)}
                 />
-                <Button variant='primary-yellow' onClick={handleSkill} text='Tambah'/>
+                <Button variant='primary-yellow' onClick={handleSkill} text='Tambah' />
             </div>
             <ul className='flex gap-2'>
                 {mySkill.map((item) => (
                     <div key={item.id} className='flex justify-between items-center gap-1'>
-                        <Tag key={item.id} skill={item.skill_name} />
+                        <Tag skill={item.skill_name} />
                         {/* <img className='w-[12px]' onClick={()=>handleDelete(item.id)} src={RemoveIcon} /> */}
                         <p className='cursor-pointer' onClick={() => handleDelete(item.id)}>X</p>
                         {/* <div onClick={()=>handleDelete(item.id)}>Delete</div> */}
