@@ -9,27 +9,25 @@ import ProfileLocation from '../../components/base/BaseProfile/ProfileLocation'
 import ProfileStatus from '../../components/base/BaseProfile/ProfileStatus'
 import ProfileDescription from '../../components/base/BaseProfile/ProfileDescription'
 
-import ProfileTab from '../../components/module/ProfileTab'
-
 import Tag from '../../components/base/Tag'
-import Social from '../../components/base/Social'
 import Button from '../../components/base/Button'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import api from '../../configs/api'
-import GreyEdit from '../../assets/grey-edit.svg'
-import FormSubContainer from '../../components/base/FormSubContainer'
 import Input from '../../components/base/Input'
-import AddSkill from '../../components/module/AddSkill'
-import AddExperience from '../../components/module/AddExperience'
-import AddPortfolio from '../../components/module/AddPortfolio'
 import FormContainer from '../../components/module/FormContainer'
+
+import { useDispatch, useSelector } from 'react-redux';
+import { hireWorker } from '../../configs/redux/hireSlice'
 
 
 const HireTalent = () => {
   const { id } = useParams()
+
+  const dispatch = useDispatch()
+
   const [profile, setProfile] = useState({})
+
   const [form, setForm] = useState({
-    id: '',
     worker_id: '',
     message_purpose: '',
     name: '',
@@ -37,6 +35,7 @@ const HireTalent = () => {
     phone: '',
     desciption: '',
   });
+  
   const [skills, setSkills] = useState([])
 
 
@@ -53,7 +52,7 @@ const HireTalent = () => {
         const result = res.data.data
         console.log(result);
         setProfile(result)
-        setForm({ worker_id: id })
+        setForm({ ...form, worker_id: id })
       })
       .catch((err) => {
         console.log(err.response);
@@ -75,15 +74,17 @@ const HireTalent = () => {
   const handleHire = (e) => {
     e.preventDefault()
     // console.log(form);
-    api.post('/hire', form)
-      .then((res) => {
-        console.log(res)
-        // navigate(`/talent/profile/${id}`)
-      })
-      .catch((err) => {
-        console.log(err.response);
-        alert('Gagal untuk memperbarui data')
-      })
+    console.log(form);
+    dispatch(hireWorker(form));
+    // api.post('/hire', form)
+    //   .then((res) => {
+    //     console.log(res)
+    //     // navigate(`/talent/profile/${id}`)
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.response);
+    //     alert('Gagal untuk memperbarui data')
+    //   })
   }
 
   return (

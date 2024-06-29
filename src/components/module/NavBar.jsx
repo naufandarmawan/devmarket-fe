@@ -11,7 +11,9 @@ import { checkRole, logout } from '../../configs/redux/authSlice'
 const NavBar = () => {
 
     const navigate = useNavigate();
+
     const dispatch = useDispatch();
+
     const { token, role } = useSelector((state) => state.auth);
 
     const [myProfile, setMyProfile] = useState({});
@@ -23,8 +25,7 @@ const NavBar = () => {
     };
 
     const handleLogOut = () => {
-        dispatch(logout());
-        navigate('/');
+        dispatch(logout({navigate}));
     };
 
     useEffect(() => {
@@ -35,7 +36,8 @@ const NavBar = () => {
 
     useEffect(() => {
         if (role) {
-            if (role === 'recruiter') {
+            console.log(role);
+            if (role === 'Recruiter') {
                 api.get('/recruiters/profile')
                     .then((res) => {
                         const result = res.data.data;
@@ -55,7 +57,7 @@ const NavBar = () => {
                     });
             }
 
-            if (role === 'recruiter') {
+            if (role === 'Recruiter') {
                 api.get('/hire/recruiters')
                     .then((res) => {
                         const result = res.data.data;
@@ -78,107 +80,12 @@ const NavBar = () => {
     }, [role]);
 
     const handleProfile = () => {
-        if (role === 'recruiter') {
+        if (role === 'Recruiter') {
             navigate(`/company/profile/`);
         } else {
             navigate(`/talent/profile/${myProfile.id}`);
         }
     };
-
-    // const navigate = useNavigate()
-
-    // const [myProfile, setMyProfile] = useState({})
-    // const [myRole, setMyRole] = useState('')
-    // const [isLoggedIn, setIsLoggedIn] = useState(false);
-    // const [showPopover, setShowPopover] = useState(false);
-    // const [notification, setNotification] = useState([])
-
-    // const togglePopover = () => {
-    //     setShowPopover(!showPopover);
-    // };
-
-    // const handleLogOut = () => {
-    //     api.get(`/auth/logout`)
-    //         .then((res) => {
-    //             localStorage.removeItem('token')
-    //             localStorage.removeItem('refreshToken')
-    //             alert(res.data.message);
-    //             setIsLoggedIn(false);
-    //             navigate("/")
-    //         })
-    //         .catch((err) => {
-    //             console.log(err.response);
-    //         })
-    // }
-
-
-    // useEffect(() => {
-    //     const token = localStorage.getItem('token');
-    //     if (token) {
-    //         setIsLoggedIn(true);
-    //     } else {
-    //         setIsLoggedIn(false);
-    //     }
-    //     if (isLoggedIn) {
-    //         api.get(`/auth/check-role`)
-    //             .then((res) => {
-    //                 const result = res.data.data.data.role;
-    //                 setMyRole(result);
-    //             })
-    //             .catch((err) => {
-    //                 console.log(err.response);
-    //             });
-
-    //         if (myRole === 'recruiter') {
-    //             api.get(`/recruiters/profile`)
-    //                 .then((res) => {
-    //                     const result = res.data.data;
-    //                     setMyProfile(result);
-    //                 })
-    //                 .catch((err) => {
-    //                     console.log(err.response);
-    //                 });
-    //         } else {
-    //             api.get(`/workers/profile`)
-    //                 .then((res) => {
-    //                     const result = res.data.data;
-    //                     setMyProfile(result);
-    //                 })
-    //                 .catch((err) => {
-    //                     console.log(err.response);
-    //                 });
-    //         }
-    //     }
-
-    //     if (myRole === 'recruiter') {
-    //         api.get(`/hire/recruiters`)
-    //             .then((res) => {
-    //                 const result = res.data.data
-    //                 setNotification(result)
-    //             })
-    //             .catch((err) => {
-    //                 console.log(err.response);
-    //             })
-    //     } else {
-    //         api.get(`/hire/workers`)
-    //             .then((res) => {
-    //                 const result = res.data.data
-    //                 setNotification(result)
-    //             })
-    //             .catch((err) => {
-    //                 console.log(err.response);
-    //             })
-    //     }
-
-    // }, [isLoggedIn, myRole])
-
-    // const handleProfile = () => {
-    //     if (myRole === 'recruiter') {
-    //         navigate(`/company/profile/`)
-    //     } else {
-    //         navigate(`/talent/profile/${myProfile.id}`)
-    //     }
-    // }
 
     const preLogin =
         <div className="px-[150px] py-8 bg-white max-lg:p-8">

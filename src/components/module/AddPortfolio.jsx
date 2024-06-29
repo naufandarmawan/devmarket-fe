@@ -11,6 +11,7 @@ import GreySize from '../../assets/grey-expand.svg'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getPortfolio, addPortfolio, updatePortfolio, deletePortfolio } from '../../configs/redux/portfolioSlice';
+import { uploadFile, clearImage } from '../../configs/redux/assetSlice'
 
 
 const AddPortfolio = () => {
@@ -20,6 +21,8 @@ const AddPortfolio = () => {
     // const [portfolio, setPortfolio] = useState([])
 
     const portfolio = useSelector((state) => state.portfolio.portfolio)
+    const image = useSelector((state) => state.asset.image);
+    const uploadStatus = useSelector((state) => state.asset.status);
 
     const [form, setForm] = useState({
         id: '',
@@ -110,21 +113,24 @@ const AddPortfolio = () => {
             link_repository: '',
             application: '',
             image: '',
-        })
+        }),
+            dispatch(clearImage());
     }
 
     const handleFile = (e) => {
         const file = e.target.files[0]
-        const formData = new FormData()
-        formData.append('file', file)
-        api.post(`/upload`, formData)
-            .then((res) => {
-                const { file_url } = res.data.data
-                setForm({ ...form, image: file_url })
-            })
-            .catch((err) => {
-                console.log(err.response);
-            });
+
+        dispatch(uploadFile(file));
+        // const formData = new FormData()
+        // formData.append('file', file)
+        // api.post(`/upload`, formData)
+        //     .then((res) => {
+        //         const { file_url } = res.data.data
+        //         setForm({ ...form, image: file_url })
+        //     })
+        //     .catch((err) => {
+        //         console.log(err.response);
+        //     });
     }
 
     // useEffect(() => {
@@ -134,6 +140,15 @@ const AddPortfolio = () => {
     useEffect(() => {
         dispatch(getPortfolio())
     }, [dispatch])
+
+    useEffect(() => {
+        if (uploadStatus === 'succeeded') {
+            setForm((prevForm) => ({
+                ...prevForm,
+                image,
+            }));
+        }
+    }, [image, uploadStatus]);
 
     return (
         <div className='flex flex-col gap-[30px]'>
