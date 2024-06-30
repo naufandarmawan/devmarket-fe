@@ -21,79 +21,110 @@ import AddSkill from '../../components/module/AddSkill'
 import AddExperience from '../../components/module/AddExperience'
 import AddPortfolio from '../../components/module/AddPortfolio'
 
+import { useDispatch, useSelector } from 'react-redux'
+import { getMyProfile, updatePhoto, updateProfile } from '../../configs/redux/workerSlice'
+
 
 const EditTalent = () => {
-  const { id } = useParams()
-  const [profile, setProfile] = useState({})
+
+  const dispatch = useDispatch()
+
+  // const [profile, setProfile] = useState({})
+  const profile = useSelector((state) => state.worker.myProfile)
+
   const [form, setForm] = useState({
     name: '',
-    job_desk: '',
-    domicile: '',
+    position: '',
+    location: '',
     workplace: '',
     description: '',
-    photo: '',
+    phone: '',
+    instagram: '',
+    github: '',
+    gitlab: ''
   });
 
-  const getProfile = () => {
-    api.get(`/workers/${id}`)
-      .then((res) => {
-        const result = res.data.data
-        console.log(result);
-        setProfile(result)
-        setForm({
-          name: result.name || '',
-          job_desk: result.job_desk || '',
-          domicile: result.domicile || '',
-          workplace: result.workplace || '',
-          description: result.description || '',
-          photo: result.photo || '',
-        })
-      })
-      .catch((err) => {
-        console.log(err.response);
-      })
-  }
+  // const getProfile = () => {
+  //   api.get(`/workers/${id}`)
+  //     .then((res) => {
+  //       const result = res.data.data
+  //       console.log(result);
+  //       setProfile(result)
+  //       setForm({
+  //         name: result.name || '',
+  //         job_desk: result.job_desk || '',
+  //         domicile: result.domicile || '',
+  //         workplace: result.workplace || '',
+  //         description: result.description || '',
+  //         photo: result.photo || '',
+  //       })
+  //     })
+  //     .catch((err) => {
+  //       console.log(err.response);
+  //     })
+  // }
 
   useEffect(() => {
-    getProfile()
-  }, [])
+    dispatch(getMyProfile())
+  }, [dispatch])
+
+  useEffect(() => {
+    if (profile) {
+      setForm({
+        name: profile.name || '',
+        position: profile.position || '',
+        location: profile.location || '',
+        workplace: profile.workplace || '',
+        description: profile.description || '',
+        phone: profile.phone || '',
+        instagram: profile.instagram || '',
+        github: profile.github || '',
+        gitlab: profile.gitlab || ''
+      })
+    }
+  }, [profile])
 
   const navigate = useNavigate()
+
   const handleCancel = () => {
-    navigate(`/talent/profile/${id}`)
+    navigate(`/talent/profile/`)
   }
 
   const handleSave = (e) => {
     e.preventDefault()
+
+    dispatch(updateProfile(form))
+
+    navigate('/talent/profile')
     // console.log(form);
 
-    if (form.photo !== profile.photo) {
-      api.put(`/workers/profile/photo/`, { photo: form.photo })
-        .then((res) => {
-          console.log(res)
-          // navigate(`/talent/profile/${id}`)
-        })
-        .catch((err) => {
-          console.log(err.response);
-          alert('Failed to update profile data')
-        })
-    }
+    // if (form.photo !== profile.photo) {
+    //   api.put(`/workers/profile/photo/`, { photo: form.photo })
+    //     .then((res) => {
+    //       console.log(res)
+    //       // navigate(`/talent/profile/${id}`)
+    //     })
+    //     .catch((err) => {
+    //       console.log(err.response);
+    //       alert('Failed to update profile data')
+    //     })
+    // }
 
-    api.put('/workers/profile', {
-      name: form.name,
-      job_desk: form.job_desk,
-      domicile: form.domicile,
-      workplace: form.workplace,
-      description: form.description,
-    })
-      .then((res) => {
-        console.log(res)
-        // navigate(`/talent/profile/${id}`)
-      })
-      .catch((err) => {
-        console.log(err.response);
-        alert('Gagal untuk memperbarui data')
-      })
+    // api.put('/workers/profile', {
+    //   name: form.name,
+    //   job_desk: form.job_desk,
+    //   domicile: form.domicile,
+    //   workplace: form.workplace,
+    //   description: form.description,
+    // })
+    //   .then((res) => {
+    //     console.log(res)
+    //     // navigate(`/talent/profile/${id}`)
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.response);
+    //     alert('Gagal untuk memperbarui data')
+    //   })
   }
 
   const handleChange = (e) => {
@@ -111,9 +142,11 @@ const EditTalent = () => {
   // }
 
   const handlePhoto = (e) => {
-    const photo = e.target.files[0]
+    const file = e.target.files[0]
     const formData = new FormData()
-    formData.append('photo', photo)
+    formData.append('file', file)
+
+    dispatch(updatePhoto(formData))
     // api.post(`/upload`, formData)
     //   .then((res) => {
     //     const { file_url } = res.data.data
@@ -122,14 +155,14 @@ const EditTalent = () => {
     //   .catch((err) => {
     //     console.log(err.response);
     //   });
-    api.put(`/workers/profile/photo`, formData)
-      .then((res) => {
-        console.log(res);
-        getProfile()
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
+    // api.put(`/workers/profile/photo`, formData)
+    //   .then((res) => {
+    //     console.log(res);
+    //     // getProfile()
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.response);
+    //   });
 
   }
 
@@ -155,8 +188,8 @@ const EditTalent = () => {
 
               <div className='flex flex-col gap-[13px] w-full'>
                 <ProfileName name={profile.name} />
-                <ProfileJob job={profile.job_desk} />
-                <ProfileLocation location={profile.domicile} />
+                <ProfileJob job={profile.position} />
+                <ProfileLocation location={profile.location} />
                 <ProfileStatus status={profile.workplace} />
               </div>
             </div>
@@ -179,17 +212,17 @@ const EditTalent = () => {
               />
               <Input
                 type='text'
-                value={form.job_desk}
+                value={form.position}
                 onChange={handleChange}
-                name="job_desk"
+                name="position"
                 label="Job desk"
                 placeholder="Masukan job desk"
               />
               <Input
                 type='text'
-                value={form.domicile}
+                value={form.location}
                 onChange={handleChange}
-                name="domicile"
+                name="location"
                 label="Domisili"
                 placeholder="Masukan domisili"
               />
@@ -208,6 +241,38 @@ const EditTalent = () => {
                 name="description"
                 label="Deskripsi singkat"
                 placeholder="Tuliskan deskripsi singkat"
+              />
+              <Input
+                type='tel'
+                value={form.phone}
+                onChange={handleChange}
+                name="phone"
+                label="No. Telepon"
+                placeholder="Masukan nomor telepon"
+              />
+              <Input
+                type='text'
+                value={form.instagram}
+                onChange={handleChange}
+                name="instagram"
+                label="Instagram"
+                placeholder="Tuliskan nama instagram"
+              />
+              <Input
+                type='url'
+                value={form.github}
+                onChange={handleChange}
+                name="github"
+                label="Github"
+                placeholder="Tuliskan nama Github"
+              />
+              <Input
+                type='url'
+                value={form.gitlab}
+                onChange={handleChange}
+                name="gitlab"
+                label="Gitlab"
+                placeholder="Tuliskan nama Gitlab"
               />
             </FormSubContainer>
 

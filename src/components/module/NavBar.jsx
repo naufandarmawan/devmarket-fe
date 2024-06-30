@@ -7,6 +7,7 @@ import Person1 from '../../assets/person-1.png'
 import api from '../../configs/api'
 import { useDispatch, useSelector } from 'react-redux'
 import { checkRole, logout } from '../../configs/redux/authSlice'
+import { recruiterHiringHistory, workerHiringHistory } from '../../configs/redux/hireSlice'
 
 const NavBar = () => {
 
@@ -15,17 +16,18 @@ const NavBar = () => {
     const dispatch = useDispatch();
 
     const { token, role } = useSelector((state) => state.auth);
+    const notification = useSelector((state) => state.hire.history)
 
     const [myProfile, setMyProfile] = useState({});
     const [showPopover, setShowPopover] = useState(false);
-    const [notification, setNotification] = useState([]);
+    // const [notification, setNotification] = useState([]);
 
     const togglePopover = () => {
         setShowPopover(!showPopover);
     };
 
     const handleLogOut = () => {
-        dispatch(logout({navigate}));
+        dispatch(logout({ navigate }));
     };
 
     useEffect(() => {
@@ -40,7 +42,7 @@ const NavBar = () => {
             if (role === 'Recruiter') {
                 api.get('/recruiters/profile')
                     .then((res) => {
-                        const result = res.data.data;
+                        const result = res.data.data[0];
                         setMyProfile(result);
                     })
                     .catch((err) => {
@@ -58,23 +60,25 @@ const NavBar = () => {
             }
 
             if (role === 'Recruiter') {
-                api.get('/hire/recruiters')
-                    .then((res) => {
-                        const result = res.data.data;
-                        setNotification(result);
-                    })
-                    .catch((err) => {
-                        console.log(err.response);
-                    });
+                dispatch(recruiterHiringHistory())
+                // api.get('/hire/recruiters')
+                //     .then((res) => {
+                //         const result = res.data.data;
+                //         setNotification(result);
+                //     })
+                //     .catch((err) => {
+                //         console.log(err.response);
+                //     });
             } else {
-                api.get('/hire/workers')
-                    .then((res) => {
-                        const result = res.data.data;
-                        setNotification(result);
-                    })
-                    .catch((err) => {
-                        console.log(err.response);
-                    });
+                dispatch(workerHiringHistory())
+                // api.get('/hire/workers')
+                //     .then((res) => {
+                //         const result = res.data.data;
+                //         setNotification(result);
+                //     })
+                //     .catch((err) => {
+                //         console.log(err.response);
+                //     });
             }
         }
     }, [role]);
@@ -83,7 +87,7 @@ const NavBar = () => {
         if (role === 'Recruiter') {
             navigate(`/company/profile/`);
         } else {
-            navigate(`/talent/profile/${myProfile.id}`);
+            navigate(`/talent/profile/`);
         }
     };
 
@@ -127,11 +131,11 @@ const NavBar = () => {
                         {/* <button onClick={togglePopover}>Toggle Popover</button> */}
                         {showPopover && (
                             <div
-                                className="absolute w-[300px] flex flex-col gap-3 bg-white border border-gray-300 shadow rounded p-4 z-10 top-full mt-2 left-1/2 transform -translate-x-1/2"
+                                className="absolute w-[300px] flex flex-col gap-4 bg-white border border-gray-300 shadow rounded p-4 z-10 top-full mt-2 left-1/2 transform -translate-x-1/2"
                             >
                                 {notification.map((item) => (
                                     <div key={item.id}>
-                                        {role === 'recruiter' ? `Hi ${item.recruiter_name}, you have successfully sent a message for ${item.worker_name}, a ${item.worker_job_desk} at ${item.worker_workplace} for ${item.message_purpose} opportunity.` : `Hi ${item.worker_name}, you have a new ${item.message_purpose} opportunity from ${item.recruiter_name}, ${item.recruiter_position} at ${item.recruiter_company}. Please check your email for details.`}
+                                        {role === 'Recruiter' ? `Hi ${item.recruiter_name}, you have successfully sent a message for ${item.worker_name}, a ${item.worker_position} at ${item.worker_workplace} for ${item.purpose} opportunity.` : `Hi ${item.worker_name}, you have a new ${item.purpose} opportunity from ${item.recruiter_name} at ${item.recruiter_company}. Please check your email for details.`}
                                     </div>
                                 ))}
                             </div>

@@ -7,12 +7,15 @@ import Button from '../../components/base/Button'
 import api from '../../configs/api'
 import { ToastContainer, toast } from 'react-toastify';
 // import { registerRecruiter } from '../../configs/redux/action/authAction'
-// import { useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
+import { register } from '../../configs/redux/recruiterSlice'
 
 
 const RegisterRecruiter = () => {
   const navigate = useNavigate()
-  // const dispatch = useDispatch()
+
+  const dispatch = useDispatch()
+
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -24,25 +27,28 @@ const RegisterRecruiter = () => {
 
   const handleRegister = (e) => {
     e.preventDefault()
+    dispatch(register(form))
+    toast.success(`Register berhasil. Silakan Login`)
+    navigate('/login')
     // dispatch(registerRecruiter(form, navigate))
-    api.post('/recruiters/register', {
-      email: form.email,
-      password: form.password,
-      name: form.name,
-      company: form.company,
-      position: form.position,
-      phone: form.phone
-    })
-      .then((res) => {
-        console.log(res.response);
-        toast.success(`Register berhasil. Silakan Login`)
-        navigate('/login')
-      })
-      .catch((err) => {
-        console.log(err.response);
-        const error = err.response.data
-        toast.error(`Anda gagal register - ${error.message}`)
-      })
+    // api.post('/recruiters/register', {
+    //   email: form.email,
+    //   password: form.password,
+    //   name: form.name,
+    //   company: form.company,
+    //   position: form.position,
+    //   phone: form.phone
+    // })
+    //   .then((res) => {
+    //     console.log(res.response);
+    //     toast.success(`Register berhasil. Silakan Login`)
+    //     navigate('/login')
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.response);
+    //     const error = err.response.data
+    //     toast.error(`Anda gagal register - ${error.message}`)
+    //   })
   }
 
   const handleChange = (e) => {

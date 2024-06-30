@@ -11,32 +11,43 @@ import ProfileDescription from '../../components/base/BaseProfile/ProfileDescrip
 
 import Tag from '../../components/base/Tag'
 import Button from '../../components/base/Button'
-import { useParams } from 'react-router-dom'
-import api from '../../configs/api'
+import { useNavigate, useParams } from 'react-router-dom'
 import Input from '../../components/base/Input'
 import FormContainer from '../../components/module/FormContainer'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { hireWorker } from '../../configs/redux/hireSlice'
+import { getProfile } from '../../configs/redux/workerSlice'
 
 
 const HireTalent = () => {
   const { id } = useParams()
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  const [profile, setProfile] = useState({})
+  // const [profile, setProfile] = useState({})
+  const profile = useSelector((state) => state.worker.profile)
 
   const [form, setForm] = useState({
-    worker_id: '',
-    message_purpose: '',
+    worker_id: id,
+    purpose: 'Full-time',
     name: '',
+    company: '',
     email: '',
     phone: '',
-    desciption: '',
+    description: ''
   });
-  
-  const [skills, setSkills] = useState([])
+
+  const handleSortChange = (e) => {
+    const selectedValue = e.target.value;
+    setForm({
+      ...form,
+      purpose: selectedValue
+    });
+  };
+
+  // const [skills, setSkills] = useState([])
 
 
   const handleChange = (e) => {
@@ -46,45 +57,40 @@ const HireTalent = () => {
     })
   }
 
-  const getProfile = () => {
-    api.get(`/workers/${id}`)
-      .then((res) => {
-        const result = res.data.data
-        console.log(result);
-        setProfile(result)
-        setForm({ ...form, worker_id: id })
-      })
-      .catch((err) => {
-        console.log(err.response);
-      })
-  }
+  // const getProfile = () => {
+  //   api.get(`/workers/${id}`)
+  //     .then((res) => {
+  //       const result = res.data.data
+  //       console.log(result);
+  //       setProfile(result)
+  //       setForm({ ...form, worker_id: id })
+  //     })
+  //     .catch((err) => {
+  //       console.log(err.response);
+  //     })
+  // }
 
   useEffect(() => {
-    getProfile()
-    api.get(`/skills/${id}`)
-      .then((res) => {
-        const result = res.data.data
-        setSkills(result)
-      })
-      .catch((err) => {
-        console.log(err.response);
-      })
-  }, [])
-
-  const handleHire = (e) => {
-    e.preventDefault()
-    // console.log(form);
-    console.log(form);
-    dispatch(hireWorker(form));
-    // api.post('/hire', form)
+    dispatch(getProfile(id))
+    // getProfile()
+    // api.get(`/skills/${id}`)
     //   .then((res) => {
-    //     console.log(res)
-    //     // navigate(`/talent/profile/${id}`)
+    //     const result = res.data.data
+    //     setSkills(result)
     //   })
     //   .catch((err) => {
     //     console.log(err.response);
-    //     alert('Gagal untuk memperbarui data')
     //   })
+  }, [dispatch])
+
+  const handleHire = (e) => {
+    e.preventDefault()
+    dispatch(hireWorker(form));
+    navigate(`/talent/profile/${id}`)
+  }
+
+  const handleCancel = () => {
+    navigate(`/talent/profile/${id}`)
   }
 
   return (
@@ -95,25 +101,32 @@ const HireTalent = () => {
       <div className='px-[150px] pt-[70px] pb-[210px] max-lg:px-[30px]'>
         <div className="flex gap-[30px] container mx-auto max-lg:flex-col">
 
-          <div className="flex flex-col basis-4/12 gap-[34px] bg-[#FFFFFF] p-[30px] h-fit rounded-lg">
-            <div className="flex flex-col gap-5 items-center">
+          <div className="flex flex-col basis-4/12 gap-[34px] h-fit">
+            <div className="flex flex-col gap-5 items-center bg-[#FFFFFF] p-[30px] rounded-lg">
               <ProfileImage image={profile.photo} />
               <div className='flex flex-col gap-[13px] w-full'>
                 <ProfileName name={profile.name} />
-                <ProfileJob job={profile.job_desk} />
-                <ProfileLocation location={profile.domicile} />
+                <ProfileJob job={profile.position} />
+                <ProfileLocation location={profile.location} />
                 <ProfileStatus status={profile.workplace} />
               </div>
               <ProfileDescription>{profile.description}</ProfileDescription>
+
+              {/* {skills.length > 0 &&
+                <div className="flex flex-col gap-5">
+                  <h3 className="font-semibold text-[22px] leading-6 text-[#1F2A36]">Skill</h3>
+                  <ul className="flex flex-wrap gap-x-[10px] gap-y-[20px]">
+                    {skills.map((item) => (
+                      <Tag key={item.id} skill={item.skill_name} />
+                    ))}
+                  </ul>
+                </div>
+              } */}
+
             </div>
 
-            <div className="flex flex-col gap-5">
-              <h3 className="font-semibold text-[22px] leading-6 text-[#1F2A36]">Skill</h3>
-              <ul className="flex flex-wrap gap-x-[10px] gap-y-[20px]">
-                {skills.map((item) => (
-                  <Tag key={item.id} skill={item.skill_name} />
-                ))}
-              </ul>
+            <div className='flex flex-col gap-[15px]'>
+              <Button variant='secondary-purple' onClick={handleCancel} text='Cancel' />
             </div>
           </div>
 
@@ -121,14 +134,20 @@ const HireTalent = () => {
             <div className='flex flex-col basis-1/2'>
               <FormContainer formTitle={`Hubungi ${profile.name}`} formDescription='Lorem ipsum dolor sit amet, consectetur adipiscing elit. In euismod ipsum et dui rhoncus auctor.'>
                 <div className="flex flex-col gap-4">
-                  <Input
-                    type='text'
-                    value={form.message_purpose}
-                    onChange={handleChange}
-                    name="message_purpose"
-                    label="Tujuan tentang pesan ini"
-                    placeholder="Projek"
-                  />
+                  <div className="flex flex-col gap-1 w-full">
+                    <label className="font-normal text-xs text-[#9EA0A5] pl-[5px]">Tujuan tentang pesan ini</label>
+                    <select className='p-[15px] rounded-[4px] font-normal text-sm text-[#1F2A36] placeholder:text-[#858D96] outline-none border border-[#E2E5ED]' value={form.purpose}
+                      onChange={handleSortChange}>
+                      <option value="Full-time" selected>Full-time</option>
+                      <option value="Part-time" selected>Part-time</option>
+                      <option value="Self-employed" selected>Self-employed</option>
+                      <option value="Freelance" selected>Freelance</option>
+                      <option value="Contract" selected>Contract</option>
+                      <option value="Internship" selected>Internship</option>
+                      <option value="Apprenticeship" selected>Apprenticeship</option>
+                      <option value="Seasonal" selected>Seasonal</option>
+                    </select>
+                  </div>
                   <Input
                     type='text'
                     value={form.name}
@@ -136,6 +155,14 @@ const HireTalent = () => {
                     name="name"
                     label="Nama lengkap"
                     placeholder="Masukan nama lengkap"
+                  />
+                  <Input
+                    type='text'
+                    value={form.company}
+                    onChange={handleChange}
+                    name="company"
+                    label="Nama Perusahaan"
+                    placeholder="Masukan nama perusahaan"
                   />
                   <Input
                     type='email'
@@ -155,9 +182,9 @@ const HireTalent = () => {
                   />
                   <Input
                     type='textarea'
-                    value={form.desciption}
+                    value={form.description}
                     onChange={handleChange}
-                    name="desciption"
+                    name="description"
                     label="Deskripsi"
                     placeholder="Deskripsikan/jelaskan lebih detail "
                   />

@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import CompanyLogo from '../../assets/company-logo.png'
 import PortfolioContent from '../base/PortfolioContent'
 import ExperienceContent from '../base/ExperienceContent'
-import { useParams } from 'react-router-dom'
+// import { useParams } from 'react-router-dom'
 import api from '../../configs/api'
 
 
-const ProfileTab = () => {
-    const { id } = useParams()
+const ProfileTab = ({ user }) => {
+
     const [toggle, setToggle] = useState(1)
     const handleToggle = (id) => {
         setToggle(id)
@@ -19,26 +19,49 @@ const ProfileTab = () => {
 
     useEffect(() => {
         // const token = localStorage.getItem('token')
+        console.log(user);
+        if (user) {
+            api.get(`/portfolio/${user}`)
+                .then((res) => {
+                    const result = res.data.data
+                    console.log(result)
+                    setPortfolioData(result)
+                })
+                .catch((err) => {
+                    console.log(err.response);
+                })
 
-        api.get(`/portfolio/${id}`)
-            .then((res) => {
-                const result = res.data.data
-                console.log(result)
-                setPortfolioData(result)
-            })
-            .catch((err) => {
-                console.log(err.response);
-            })
+            api.get(`/experience/${user}`)
+                .then((res) => {
+                    const result = res.data.data
+                    console.log(result)
+                    setExperienceData(result)
+                })
+                .catch((err) => {
+                    console.log(err.response);
+                })
+        } else {
+            api.get(`/portfolio`)
+                .then((res) => {
+                    const result = res.data.data
+                    console.log(result)
+                    setPortfolioData(result)
+                })
+                .catch((err) => {
+                    console.log(err.response);
+                })
 
-        api.get(`/experience/${id}`)
-            .then((res) => {
-                const result = res.data.data
-                console.log(result)
-                setExperienceData(result)
-            })
-            .catch((err) => {
-                console.log(err.response);
-            })
+            api.get(`/experience`)
+                .then((res) => {
+                    const result = res.data.data
+                    console.log(result)
+                    setExperienceData(result)
+                })
+                .catch((err) => {
+                    console.log(err.response);
+                })
+        }
+
     }, [])
 
     return (
@@ -58,6 +81,7 @@ const ProfileTab = () => {
                 <div className='grid grid-cols-3 gap-x-[18px] gap-y-[30px] max-lg:grid-cols-1'>
                     {portfolioData.map((item) => (
                         <PortfolioContent
+                            key={item.id}
                             app={item.application_name}
                             image={item.image}
                             link={item.link_repository}
@@ -70,6 +94,7 @@ const ProfileTab = () => {
                 <div className='flex flex-col gap-4'>
                     {experienceData.map((item) => (
                         <ExperienceContent
+                            key={item.id}
                             companyLogo={item.photo ? item.photo : CompanyLogo}
                             position={item.position}
                             company={item.company}

@@ -1,8 +1,3 @@
-import Person1 from '../../assets/person-1.png'
-import InstagramIcon from '../../assets/grey-instagram.svg'
-import PhoneIcon from '../../assets/grey-phone.svg'
-import LinkedinIcon from '../../assets/grey-linkedin.svg'
-
 import React, { useEffect, useState } from 'react'
 import NavBar from '../../components/module/NavBar'
 import Footer from '../../components/module/Footer'
@@ -13,50 +8,67 @@ import ProfileJob from '../../components/base/BaseProfile/ProfileJob'
 import ProfileLocation from '../../components/base/BaseProfile/ProfileLocation'
 
 import Button from '../../components/base/Button'
-import { useNavigate, useParams } from 'react-router-dom'
-import api from '../../configs/api'
+import { useNavigate} from 'react-router-dom'
 import FormSubContainer from '../../components/base/FormSubContainer'
 import Input from '../../components/base/Input'
 
+import GreyEdit from '../../assets/grey-edit.svg'
+
+import { useDispatch, useSelector } from 'react-redux'
+import { getProfile, updateProfile } from '../../configs/redux/recruiterSlice'
+import { uploadFile } from '../../configs/redux/assetSlice'
+
 
 const EditCompany = () => {
-  const [profile, setProfile] = useState({})
+
+  const dispatch = useDispatch()
+
+  const profile = useSelector((state) => state.recruiter.profile)
+  const image = useSelector((state)=>state.asset.file)
+
+
   const [form, setForm] = useState({
-    company: '',
-    position: '',
-    city: '',
-    description: '',
-    phone: '',
-    instagram: '',
-    linkedin: '',
-    photo: '',
-    email: ''
+    photo: "",
+    name: "",
+    company: "",
+    position: "",
+    industry: "",
+    location: "",
+    description: "",
+    instagram: "",
+    phone: "",
+    linkedin: ""
   });
 
   useEffect(() => {
-    api.get(`/recruiters/profile`)
-      .then((res) => {
-        const result = res.data.data
-        console.log(result);
-        setProfile(result)
-        setForm({
-          company: result.company || '',
-          position: result.position || '',
-          city: result.city || '',
-          description: result.description || '',
-          phone: result.phone || '',
-          instagram: result.instagram || '',
-          linkedin: result.linkedin || '',
-          photo: result.photo || '',
-          email: result.email || ''
-        })
+    dispatch(getProfile())
+  }, [dispatch])
+
+  useEffect(() => {
+    console.log(profile);
+    if (profile) {
+      setForm({
+        photo: profile.photo || '',
+        name: profile.name || '',
+        company: profile.company || '',
+        industry: profile.industry || '',
+        location: profile.location || '',
+        description: profile.description || '',
+        instagram: profile.instagram || '',
+        phone: profile.phone || '',
+        linkedin: profile.linkedin || ''
       })
-      .catch((err) => {
-        console.log(err.response);
-      })
-  }, [])
+    }
+  }, [profile])
+
+  useEffect(() => {
+    if (image) {
+      setForm((prevForm) => ({ ...prevForm, photo: image }));
+    }
+  }, [image]);
 
   const navigate = useNavigate()
+
   const handleCancel = () => {
     navigate(`/company/profile/`)
   }
@@ -64,15 +76,8 @@ const EditCompany = () => {
   const handleSave = (e) => {
     e.preventDefault()
     // console.log(form);
-    api.put('/recruiters/profile', form)
-      .then((res) => {
-        console.log(res)
-        navigate(`/company/profile`)
-      })
-      .catch((err) => {
-        console.log(err.response);
-        alert(`Gagal untuk memperbarui data - ${err.response.data.message}`)
-      })
+    dispatch(updateProfile(form))
+    navigate('/company/profile')
   }
 
   const handleChange = (e) => {
@@ -82,18 +87,11 @@ const EditCompany = () => {
     })
   }
 
-  const handleUpload = (e) => {
+  const handleFile = (e) => {
     const file = e.target.files[0]
     const formData = new FormData()
     formData.append('file', file)
-    api.post(`/upload`, formData)
-      .then((res) => {
-        const { file_url } = res.data.data
-        setForm({ ...form, photo: file_url })
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
+    dispatch(uploadFile(formData))
   }
 
   return (
@@ -107,11 +105,18 @@ const EditCompany = () => {
 
           <div className="flex flex-col basis-4/12 gap-[34px] h-fit">
             <div className="flex flex-col gap-5 items-center bg-[#FFFFFF] p-[30px] rounded-lg">
-              <ProfileImage image={profile.photo} />
+              <ProfileImage image={form.photo || profile.photo} />
+              <label htmlFor="upload-photo">
+                <input type="file" id="upload-photo" className='hidden' onChange={handleFile} />
+                <div className='flex gap-[6px] items-center cursor-pointer'>
+                  <img src={GreyEdit} className='h-[16px]' />
+                  <p className='font-semibold text-[22px] text-[#9EA0A5]'>Edit</p>
+                </div>
+              </label>
               <div className='flex flex-col gap-[13px] w-full'>
                 <ProfileName name={profile.company} />
-                <ProfileJob job={profile.position} />
-                <ProfileLocation location={profile.city} />
+                <ProfileJob job={profile.industry} />
+                <ProfileLocation location={profile.location} />
               </div>
             </div>
             <div className='flex flex-col gap-[15px]'>
@@ -132,17 +137,17 @@ const EditCompany = () => {
               />
               <Input
                 type='text'
-                value={form.position}
+                value={form.industry}
                 onChange={handleChange}
-                name="position"
+                name="industry"
                 label="Bidang"
                 placeholder="Masukan bidang perusahaan ex : Financial"
               />
               <Input
                 type='text'
-                value={form.city}
+                value={form.location}
                 onChange={handleChange}
-                name="city"
+                name="location"
                 label="Kota"
                 placeholder="Masukan kota"
               />
@@ -155,13 +160,21 @@ const EditCompany = () => {
                 placeholder="Tuliskan deskripsi singkat"
               />
               <Input
-                type='email'
-                value={form.email}
+                type='text'
+                value={form.name}
                 onChange={handleChange}
-                name="email"
-                label="Email"
-                placeholder="Masukan email"
+                name="name"
+                label="Nama Lengkap"
+                placeholder="Masukan nama lengkap"
               />
+              {/* <Input
+                type='text'
+                value={form.position}
+                onChange={handleChange}
+                name="position"
+                label="Jabatan"
+                placeholder="Masukan jabatan"
+              /> */}
               <Input
                 type='url'
                 value={form.instagram}
@@ -187,8 +200,6 @@ const EditCompany = () => {
                 placeholder="Masukan nama Linkedin"
               />
 
-              {form.photo && <img src={form.photo} />}
-              <input type="file" onChange={handleUpload} />
             </FormSubContainer>
 
           </div>

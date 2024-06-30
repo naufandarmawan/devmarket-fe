@@ -12,6 +12,8 @@ import RegisterTalent from '../../pages/Auth/RegisterTalent';
 import RegisterRecruiter from '../../pages/Auth/RegisterRecruiter';
 import EditCompany from '../../pages/Main/EditCompany';
 import ProtectedRoute from '../../components/module/ProtectedRoute';
+import MyProfileTalent from '../../pages/Main/MyProfileTalent';
+
 
 const MainRouter = () => {
     return (
@@ -32,7 +34,12 @@ const MainRouter = () => {
                         <ProfileTalent />
                     </ProtectedRoute>
                 } />
-                <Route path="/talent/profile/:id/edit" element={
+                <Route path="/talent/profile/" element={
+                    <ProtectedRoute>
+                        <MyProfileTalent />
+                    </ProtectedRoute>
+                } />
+                <Route path="/talent/profile/edit" element={
                     <ProtectedRoute>
                         <EditTalent />
                     </ProtectedRoute>

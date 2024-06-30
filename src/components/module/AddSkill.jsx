@@ -2,64 +2,32 @@ import React, { useEffect, useState } from 'react'
 import Input from '../base/Input'
 import Button from '../base/Button'
 import Tag from '../base/Tag'
-import api from '../../configs/api'
-import RemoveIcon from '../../assets/grey-arrow-left.svg'
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getSkill, addSkill, deleteSkill } from '../../configs/redux/skillsSlice';
+import { getMySkill, addSkill, deleteSkill } from '../../configs/redux/skillsSlice';
 
 
 const AddSkill = () => {
 
     const dispatch = useDispatch();
 
-    const [skillForm, setSkillForm] = useState('')
+    const [form, setForm] = useState('')
 
-    // const [mySkill, setMySkill] = useState([])
-    const mySkill = useSelector((state) => state.skills.skills)
-
-
-    // const getSkill = () => {
-    //     api.get('/skills')
-    //         .then((res) => {
-    //             const skills = res.data.data
-    //             setMySkill(skills)
-    //         })
-    // }
+    const mySkill = useSelector((state) => state.skills.mySkills)
 
     const handleSkill = () => {
-        // api.post(`/skills`,
-        //     { skill_name: skill })
-        //     .then((res) => {
-        //         setSkill('')
-        //         getSkill()
-        //     })
-        //     .catch((err) => {
-        //         console.log(err.response);
-        //     })
-        dispatch(addSkill(skillForm));
-        setSkillForm('');
+        dispatch(addSkill(form));
+        setForm('');
+        dispatch(getMySkill())
     }
 
     const handleDelete = (id) => {
-        // api.delete(`/skills/${id}`)
-        //     .then(() => {
-        //         getSkill()
-        //     })
-        //     .catch((err) => {
-        //         console.log(err.response);
-        //     })
-
         dispatch(deleteSkill(id));
     }
 
-    // useEffect(() => {
-    //     getSkill()
-    // }, [])
-
     useEffect(() => {
-        dispatch(getSkill())
-    }, [dispatch])
+        dispatch(getMySkill())
+    }, [])
 
 
     return (
@@ -70,8 +38,8 @@ const AddSkill = () => {
                     type='text'
                     label=''
                     placeholder='Masukkan skill'
-                    value={skillForm}
-                    onChange={(e) => setSkillForm(e.target.value)}
+                    value={form}
+                    onChange={(e) => setForm(e.target.value)}
                 />
                 <Button variant='primary-yellow' onClick={handleSkill} text='Tambah' />
             </div>

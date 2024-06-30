@@ -2,48 +2,34 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../configs/api';
 import { toast } from 'react-toastify';
 
-export const uploadFile = createAsyncThunk('asset/uploadFile', async (file, { rejectWithValue }) => {
-  const formData = new FormData();
-  formData.append('file', file);
-  try {
-    const response = await api.post('/upload', formData);
-    const { file_url } = response.data.data;
-    return file_url;
-  } catch (err) {
-    const error = err.response.data;
-    toast.error(`Gagal mengunggah file - ${error.message}`);
-    return rejectWithValue(error);
-  }
+export const uploadFile = createAsyncThunk('asset/uploadFile', async (file) => {
+  const response = await api.post('/assets/upload', file);
+  toast.success(response.data.message)
+  return response.data.data.file;
 });
 
 const assetSlice = createSlice({
   name: 'asset',
   initialState: {
-    image: '',
-    status: 'idle',
+    file:'',
+    loading: false,
     error: null,
   },
-  reducers: {
-    clearImage(state) {
-      state.image = '';
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(uploadFile.pending, (state) => {
-        state.status = 'loading';
+        state.loading = true;
       })
       .addCase(uploadFile.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.image = action.payload;
+        state.loading = false;
+        state.file = action.payload
       })
       .addCase(uploadFile.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload;
-      });
+        state.loading = false;
+        state.error = action.error.message;
+      })
   },
 });
-
-export const { clearImage } = assetSlice.actions;
 
 export default assetSlice.reducer;

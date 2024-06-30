@@ -9,7 +9,9 @@ import api from '../../configs/api'
 import Input from '../../components/base/Input'
 import Button from '../../components/base/Button'
 import GreySearch from '../../assets/grey-search.svg'
-// import { useDispatch, useSelector } from "react-redux";
+
+import { useDispatch, useSelector } from "react-redux";
+import { getWorkers } from '../../configs/redux/workerSlice'
 // import { getWorkers, previous, next} from '../../configs/redux/action/workersAction'
 
 
@@ -17,43 +19,53 @@ const Home = () => {
   // const {talent, params, searchInput, selectedSort} = useSelector((state) => state.workers);
   // const {talent} = useSelector((state)=>state.workers)
 
-  const [talent, setTalent] = useState([])
+  const dispatch = useDispatch()
+
+  const talent = useSelector((state) => state.worker.workers)
+
+  // const [talent, setTalent] = useState([])
   const [params, setParams] = useState({
     limit: 10,
     page: 1,
     search: '',
+    sort: 'created_at',
+    sortBy: 'DESC',
   })
+
   const [searchInput, setSearchInput] = useState('');
   const [selectedSort, setSelectedSort] = useState('');
+  const [selectedSortBy, setSelectedSortBy] = useState('');
 
   // const dispatch = useDispatch()
 
   const navigate = useNavigate()
 
-  const getTalent = () => {
-    // dispatch(getWorkers(params))
-    api.get('/workers/', {
-      params: {
-        limit: params.limit,
-        page: params.page,
-        ...(params.search ? { search: params.search } : {}),
-        ...(params.sort ? { sort: params.sort } : {}),
-        sortBy: params.sortBy,
-      }
-    })
-      .then((res) => {
-        const result = res.data.data
-        setTalent(result)
-      })
-      .catch((err) => {
-        console.log(err.response);
-      })
-  }
+  // const getTalent = () => {
+  // dispatch(getWorkers(params))
+
+  // api.get('/workers/', {
+  //   params: {
+  //     limit: params.limit,
+  //     page: params.page,
+  //     ...(params.search ? { search: params.search } : {}),
+  //     ...(params.sort ? { sort: params.sort } : {}),
+  //     sortBy: params.sortBy,
+  //   }
+  // })
+  //   .then((res) => {
+  //     const result = res.data.data
+  //     setTalent(result)
+  //   })
+  //   .catch((err) => {
+  //     console.log(err.response);
+  //   })
+  // }
 
 
   useEffect(() => {
-    getTalent()
-  }, [params])
+    // getTalent()
+    dispatch(getWorkers(params))
+  }, [dispatch, params])
 
   const handleNavigate = (id) => {
     navigate(`/talent/profile/${id}`)
@@ -80,18 +92,27 @@ const Home = () => {
   }
 
   const handleSearch = () => {
-    if (searchInput === '') {
-      // dispatch(setSearch({...params, search:null}))
-      setParams({ ...params, search: null });
-    } else {
-      // dispatch(setSearch(({ ...params, search: searchInput, sort: selectedSort })))
-      setParams({ ...params, search: searchInput, sort: selectedSort });
-    }
+    // if (searchInput === '') {
+    //   // dispatch(setSearch({...params, search:null}))
+    //   setParams({ ...params, search: null });
+    // } else {
+    //   // dispatch(setSearch(({ ...params, search: searchInput, sort: selectedSort })))
+    setParams({ ...params, search: searchInput, sort: selectedSort, sortBy:selectedSortBy });
+    // }
   }
 
   const handleSortChange = (e) => {
     const selectedValue = e.target.value;
     setSelectedSort(selectedValue);
+    // setParams({...params, sort: selectedValue})
+    // setParams({ ...params, sort: selectedValue });
+    // dispatch(setSort(e.target.value));
+  };
+
+  const handleSortByChange = (e) => {
+    const selectedValue = e.target.value;
+    setSelectedSortBy(selectedValue);
+    // setParams({...params, sort: selectedValue})
     // setParams({ ...params, sort: selectedValue });
     // dispatch(setSort(e.target.value));
   };
@@ -120,13 +141,18 @@ const Home = () => {
               <div className='flex border-l pl-[25px] gap-[25px]'>
                 <select className='outline-none font-normal text-sm leading-5 text-[#1F2A36]' value={selectedSort}
                   onChange={handleSortChange}>
-                  <option value="" selected>Sort</option>
+                  <option value="created_at" selected>Sort by created date</option>
                   <option value="name">Sort by name</option>
-                  <option value="domicile">Sort by location</option>
+                  <option value="location">Sort by location</option>
+                </select>
+                <select className='outline-none font-normal text-sm leading-5 text-[#1F2A36]' value={selectedSortBy}
+                  onChange={handleSortByChange}>
+                  <option value="DESC" selected>DESC</option>
+                  <option value="ASC">ASC</option>
                 </select>
                 <Button onClick={handleSearch} variant='primary-purple' text='Search' className="px-[30px] py-[15px] rounded-[4px] font-bold text-sm leading-6 text-white bg-[#5E50A1]">Search</Button>
               </div>
-              
+
             </div>
 
             <div className="flex flex-col rounded-[8px] overflow-hidden shadow-[0px_1px_20px_0_rgba(197,197,197,0.25)] gap-[1px]">
@@ -135,8 +161,8 @@ const Home = () => {
                   key={item.id}
                   image={item.photo}
                   name={item.name}
-                  job={item.job_desk}
-                  location={item.domicile}
+                  job={item.position}
+                  location={item.location}
                   skills={item.skills}
                   onClick={() => handleNavigate(item.id)}
                 />

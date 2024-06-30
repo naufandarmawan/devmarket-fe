@@ -6,82 +6,40 @@ import ExperienceContent from '../base/ExperienceContent'
 import CompanyLogo from '../../assets/company-logo.png'
 
 import { useDispatch, useSelector } from 'react-redux';
-import { addExperience, deleteExperience, getExperience, updateExperience } from '../../configs/redux/experienceSlice'
+import { addExperience, deleteExperience, getMyExperience, updateExperience } from '../../configs/redux/experienceSlice'
 
 
 const AddExperience = () => {
 
     const dispatch = useDispatch()
 
-    // const [experience, setExperience] = useState([])
-    const experience = useSelector((state) => state.experience.experience)
+    const experience = useSelector((state) => state.experience.myExperience)
 
     const [form, setForm] = useState({
-        id: '',
+        id: null,
         position: '',
         company: '',
-        work_month: '',
-        work_year: '',
-        description: '',
+        start_date: '',
+        end_date: '',
+        description: ''
     });
 
-    // const [selectedExperience, setSelectedExperience] = useState(null);
-
-    // const getExperience = () => {
-    //     api.get(`/experience/`)
-    //         .then((res) => {
-    //             const result = res.data.data
-    //             console.log(result);
-    //             setExperience(result)
-    //         })
-    //         .catch((err) => {
-    //             console.log(err.response);
-    //         })
-    // }
-
     useEffect(() => {
-        // getExperience()
-        dispatch(getExperience())
-    }, [dispatch])
+        dispatch(getMyExperience())
+    }, [])
 
-    const handleAddExperience = (e) => {
+    const handleAddExperience = async (e) => {
         e.preventDefault()
-        console.log(form.id);
-        // console.log(form);
+        
+        console.log(form);
         if (form.id) {
-            dispatch(updateExperience(form))
+            await dispatch(updateExperience(form))
+            await dispatch(getMyExperience())
         } else {
-            dispatch(addExperience(form));
+            await dispatch(addExperience(form))
+            await dispatch(getMyExperience())
         }
         resetForm();
-        // if (form.id) {
-        //     const { id, created_at, updated_at, ...updateData } = form;
-        //     api.put(`/experience/${form.id}`, { ...updateData })
-        //         .then((res) => {
-        //             console.log(res);
-        //             alert('Berhasil memperbarui pengalaman');
-        //             getExperience();
-        //             resetForm()
-        //             // setSelectedExperience(null); // Clear selected experience after update
-        //         })
-        //         .catch((err) => {
-        //             console.log(err.response);
-        //             alert('Gagal memperbarui pengalaman');
-        //         });
-        // } else {
-        //     const { id, created_at, updated_at, ...updateData } = form;
-        //     api.post('/experience', updateData)
-        //         .then((res) => {
-        //             console.log(res)
-        //             alert('Berhasil menambahkan pengalaman')
-        //             resetForm()
-        //         })
-        //         .catch((err) => {
-        //             console.log(err.response);
-        //             alert('Gagal menambahkan pengalaman')
-        //         })
-        // }
-
     }
 
     const handleChange = (e) => {
@@ -91,21 +49,11 @@ const AddExperience = () => {
         })
     }
 
-    const handleSelect = async (selectedExperience) => {
-
+    const handleSelect = (selectedExperience) => {
         setForm(selectedExperience);
-        // console.log(form);
-        // setSelectedExperience(selected);
     }
 
     const handleDelete = (id) => {
-        // api.delete(`/experience/${id}`)
-        //     .then(() => {
-        //         getExperience()
-        //     })
-        //     .catch((err) => {
-        //         console.log(err.response);
-        //     })
         dispatch(deleteExperience(id))
     }
 
@@ -114,11 +62,17 @@ const AddExperience = () => {
             id: null,
             position: '',
             company: '',
-            work_month: '',
-            work_year: '',
+            start_date: '',
+            end_date: '',
             description: '',
         })
     }
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const options = { year: 'numeric', month: 'long' };
+        return date.toLocaleDateString('en-US', options);
+    };
 
     return (
         <div className='flex flex-col gap-[30px]'>
@@ -142,19 +96,19 @@ const AddExperience = () => {
                     <div className='flex gap-[15px]'>
                         <Input
                             type='text'
-                            value={form.work_month}
+                            value={form.start_date}
                             onChange={handleChange}
-                            name="work_month"
-                            label="Bulan"
-                            placeholder="Januari"
+                            name="start_date"
+                            label="Tanggal Mulai"
+                            placeholder="2022-01-15"
                         />
                         <Input
                             type='text'
-                            value={form.work_year}
+                            value={form.end_date}
                             onChange={handleChange}
-                            name="work_year"
-                            label="Tahun"
-                            placeholder="2018"
+                            name="end_date"
+                            label="Tanggal Berakhir"
+                            placeholder="2022-06-30"
                         />
                     </div>
                     <Input
@@ -181,8 +135,9 @@ const AddExperience = () => {
                                 companyLogo={item.photo ? item.photo : CompanyLogo}
                                 position={item.position}
                                 company={item.company}
-                                workMonth={item.work_month}
-                                workYear={item.work_year}
+                                startDate={formatDate(item.start_date)}
+                                endDate={formatDate(item.end_date)}
+                                duration={item.duration_in_months}
                                 description={item.description}
                             />
                             <div className='flex gap-2 h-fit'>

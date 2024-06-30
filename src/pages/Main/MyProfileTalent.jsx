@@ -23,29 +23,27 @@ import GithubIcon from '../../assets/grey-github.svg'
 import GitlabIcon from '../../assets/grey-gitlab.svg'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { getProfile } from '../../configs/redux/workerSlice'
-import { getSkill } from '../../configs/redux/skillsSlice'
+import { getMyProfile } from '../../configs/redux/workerSlice'
+import { getMySkill } from '../../configs/redux/skillsSlice'
 
 
-const ProfileTalent = () => {
-  const { id } = useParams()
+const MyProfileTalent = () => {
 
   const dispatch = useDispatch()
 
-  const profile = useSelector((state) => state.worker.profile)
-  const skills = useSelector((state)=>state.skills.skills)
+  const profile = useSelector((state) => state.worker.myProfile)
+  const skills = useSelector((state) => state.skills.mySkills)
 
   useEffect(() => {
-    dispatch(getProfile(id))
-    dispatch(getSkill(id))
+    dispatch(getMyProfile())
+    dispatch(getMySkill())
   }, [dispatch])
 
   const navigate = useNavigate()
 
-  const handleHire = () => {
-    navigate('hire')
+  const handleEdit = () => {
+    navigate('edit')
   }
-
 
   return (
     <div className='bg-[#F6F7F8]'>
@@ -66,7 +64,7 @@ const ProfileTalent = () => {
                 <ProfileStatus status={profile.workplace} />
               </div>
               <ProfileDescription>{profile.description}</ProfileDescription>
-              <Button variant='primary-purple' className='w-full' onClick={handleHire} text='Hire' />
+              <Button variant='primary-yellow' className='w-full' onClick={handleEdit} text='Edit' />
             </div>
 
             {skills.length > 0 &&
@@ -110,7 +108,9 @@ const ProfileTalent = () => {
           </div>
 
           <div className="flex flex-col basis-8/12 gap-[34px] bg-[#FFFFFF] p-[30px] h-fit rounded-lg ">
-            <ProfileTab user={id} />
+
+            <ProfileTab />
+
           </div>
 
         </div>
@@ -121,4 +121,4 @@ const ProfileTalent = () => {
   )
 }
 
-export default ProfileTalent
+export default MyProfileTalent

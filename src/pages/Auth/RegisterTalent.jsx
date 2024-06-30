@@ -6,13 +6,16 @@ import Input from '../../components/base/Input'
 import Button from '../../components/base/Button'
 import api from '../../configs/api'
 import { ToastContainer, toast } from 'react-toastify';
-// import { registerTalent } from '../../configs/redux/action/authAction'
-// import { useDispatch } from "react-redux"
+
+import { useDispatch } from "react-redux"
+import { register } from '../../configs/redux/workerSlice'
 
 
 const RegisterTalent = () => {
   const navigate = useNavigate()
-  // const dispatch = useDispatch()
+
+  const dispatch = useDispatch()
+
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -22,23 +25,27 @@ const RegisterTalent = () => {
 
   const handleRegister = (e) => {
     e.preventDefault()
-    // dispatch(registerTalent(form, navigate))
-    api.post('/workers/register', {
-      email: form.email,
-      password: form.password,
-      name: form.name,
-      phone: form.phone
-    })
-      .then((res) => {
-        console.log(res.response);
-        toast.success(`Register berhasil. Silakan Login`)
-        navigate('/login')
-      })
-      .catch((err) => {
-        console.log(err.response);
-        const error = err.response.data
-        toast.error(`Anda gagal register - ${error.message}`)
-      })
+
+    dispatch(register(form))
+    toast.success(`Register berhasil. Silakan Login`)
+    navigate('/login')
+
+    // api.post('/workers/register', {
+    //   email: form.email,
+    //   password: form.password,
+    //   name: form.name,
+    //   phone: form.phone
+    // })
+    //   .then((res) => {
+    //     console.log(res.response);
+    //     toast.success(`Register berhasil. Silakan Login`)
+    //     navigate('/login')
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.response);
+    //     const error = err.response.data
+    //     toast.error(`Anda gagal register - ${error.message}`)
+    //   })
   }
 
   const handleChange = (e) => {
