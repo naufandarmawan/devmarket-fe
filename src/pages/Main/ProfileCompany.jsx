@@ -63,14 +63,7 @@ const ProfileCompany = () => {
                 <ProfileName name={myProfile.company} />
                 <ProfileJob job={myProfile.industry} />
                 <ProfileLocation location={myProfile.location} />
-                {/* <h2 className="font-semibold text-[22px] text-[#1F2A36]">{myProfile.company ? myProfile.company : 'Company'}</h2> */}
-                {/* <p className="font-normal text-sm leading-6 text-[#1F2A36]">{myProfile.position ? myProfile.position : 'Position'}</p>
-                <div className="flex gap-[11px]"><img src={GreyPin}
-                  alt="" />
-                  <p className="font-normal text-sm leading-5 text-[#9EA0A5]">{myProfile.city ? myProfile.city : 'City'}</p>
-                </div> */}
               </div>
-              {/* <p className="font-normal text-sm leading-6 text-[#9EA0A5]">{myProfile.description ? myProfile.description : 'Description'}</p> */}
               <ProfileDescription>{myProfile.description || 'Deskripsi Perusahaan:'}</ProfileDescription>
               <Button
               variant='primary-purple' 
@@ -78,7 +71,6 @@ const ProfileCompany = () => {
               className='w-80'
               text='Edit profile'
               />
-              {/* <button onClick={handleEdit} className="py-[15px] px-[15px] bg-[#5E50A1] rounded-[4px] font-bold text-base leading-5 text-[#FFFFFF]">Edit profile</button> */}
             </div>
             <div className="flex flex-col gap-6 font-normal text-sm leading-5 text-[#9EA0A5]">
               <SocialMedia

@@ -29,7 +29,7 @@ const ProfileTab = ({ user }) => {
 
     useEffect(() => {
         // const token = localStorage.getItem('token')
-        console.log(user);
+        // console.log(user);
         if (user) {
             dispatch(getPortfolio(user))
             dispatch(getExperience(user))

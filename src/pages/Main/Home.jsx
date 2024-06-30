@@ -5,25 +5,20 @@ import NavBar from '../../components/module/NavBar'
 import Footer from '../../components/module/Footer'
 import HomeCard from '../../components/module/HomeCard'
 import { useNavigate } from 'react-router-dom'
-import api from '../../configs/api'
 import Input from '../../components/base/Input'
 import Button from '../../components/base/Button'
 import GreySearch from '../../assets/grey-search.svg'
 
 import { useDispatch, useSelector } from "react-redux";
 import { getWorkers } from '../../configs/redux/workerSlice'
-// import { getWorkers, previous, next} from '../../configs/redux/action/workersAction'
 
 
 const Home = () => {
-  // const {talent, params, searchInput, selectedSort} = useSelector((state) => state.workers);
-  // const {talent} = useSelector((state)=>state.workers)
 
   const dispatch = useDispatch()
 
   const talent = useSelector((state) => state.worker.workers)
 
-  // const [talent, setTalent] = useState([])
   const [params, setParams] = useState({
     limit: 10,
     page: 1,
@@ -36,34 +31,10 @@ const Home = () => {
   const [selectedSort, setSelectedSort] = useState('');
   const [selectedSortBy, setSelectedSortBy] = useState('');
 
-  // const dispatch = useDispatch()
-
   const navigate = useNavigate()
-
-  // const getTalent = () => {
-  // dispatch(getWorkers(params))
-
-  // api.get('/workers/', {
-  //   params: {
-  //     limit: params.limit,
-  //     page: params.page,
-  //     ...(params.search ? { search: params.search } : {}),
-  //     ...(params.sort ? { sort: params.sort } : {}),
-  //     sortBy: params.sortBy,
-  //   }
-  // })
-  //   .then((res) => {
-  //     const result = res.data.data
-  //     setTalent(result)
-  //   })
-  //   .catch((err) => {
-  //     console.log(err.response);
-  //   })
-  // }
 
 
   useEffect(() => {
-    // getTalent()
     dispatch(getWorkers(params))
   }, [dispatch, params])
 
@@ -72,14 +43,12 @@ const Home = () => {
   }
 
   const handlePrevious = () => {
-    // dispatch(previous())
     setParams({
       ...params,
       page: params.page - 1
     })
   }
   const handleNext = () => {
-    // dispatch(next())
     setParams({
       ...params,
       page: params.page + 1
@@ -88,33 +57,20 @@ const Home = () => {
 
   const handleSearchInputChange = (e) => {
     setSearchInput(e.target.value);
-    // dispatch(setSearch(e.target.value))
   }
 
   const handleSearch = () => {
-    // if (searchInput === '') {
-    //   // dispatch(setSearch({...params, search:null}))
-    //   setParams({ ...params, search: null });
-    // } else {
-    //   // dispatch(setSearch(({ ...params, search: searchInput, sort: selectedSort })))
     setParams({ ...params, search: searchInput, sort: selectedSort, sortBy:selectedSortBy });
-    // }
   }
 
   const handleSortChange = (e) => {
     const selectedValue = e.target.value;
     setSelectedSort(selectedValue);
-    // setParams({...params, sort: selectedValue})
-    // setParams({ ...params, sort: selectedValue });
-    // dispatch(setSort(e.target.value));
   };
 
   const handleSortByChange = (e) => {
     const selectedValue = e.target.value;
     setSelectedSortBy(selectedValue);
-    // setParams({...params, sort: selectedValue})
-    // setParams({ ...params, sort: selectedValue });
-    // dispatch(setSort(e.target.value));
   };
 
   return (

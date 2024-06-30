@@ -34,6 +34,7 @@ const ProfileTalent = () => {
 
   const profile = useSelector((state) => state.worker.profile)
   const skills = useSelector((state)=>state.skills.skills)
+  const role = useSelector((state)=>state.auth.role)
 
   useEffect(() => {
     dispatch(getProfile(id))
@@ -66,7 +67,7 @@ const ProfileTalent = () => {
                 <ProfileStatus status={profile.workplace} />
               </div>
               <ProfileDescription>{profile.description}</ProfileDescription>
-              <Button variant='primary-purple' className='w-full' onClick={handleHire} text='Hire' />
+              {role === 'Recruiter' && <Button variant='primary-purple' className='w-full' onClick={handleHire} text='Hire' />}
             </div>
 
             {skills.length > 0 &&

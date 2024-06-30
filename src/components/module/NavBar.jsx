@@ -8,6 +8,8 @@ import api from '../../configs/api'
 import { useDispatch, useSelector } from 'react-redux'
 import { checkRole, logout } from '../../configs/redux/authSlice'
 import { recruiterHiringHistory, workerHiringHistory } from '../../configs/redux/hireSlice'
+import { getProfile } from '../../configs/redux/recruiterSlice'
+import { getMyProfile } from '../../configs/redux/workerSlice'
 
 const NavBar = () => {
 
@@ -17,6 +19,9 @@ const NavBar = () => {
 
     const { token, role } = useSelector((state) => state.auth);
     const notification = useSelector((state) => state.hire.history)
+
+    const workerProfile = useSelector((state) => state.worker.myProfile)
+    const recruiterProfile = useSelector((state) => state.recruiter.profile)
 
     const [myProfile, setMyProfile] = useState({});
     const [showPopover, setShowPopover] = useState(false);
@@ -38,50 +43,27 @@ const NavBar = () => {
 
     useEffect(() => {
         if (role) {
-            console.log(role);
             if (role === 'Recruiter') {
-                api.get('/recruiters/profile')
-                    .then((res) => {
-                        const result = res.data.data[0];
-                        setMyProfile(result);
-                    })
-                    .catch((err) => {
-                        console.log(err.response);
-                    });
+                dispatch(getProfile())
             } else {
-                api.get('/workers/profile')
-                    .then((res) => {
-                        const result = res.data.data;
-                        setMyProfile(result);
-                    })
-                    .catch((err) => {
-                        console.log(err.response);
-                    });
+                dispatch(getMyProfile())
             }
 
             if (role === 'Recruiter') {
                 dispatch(recruiterHiringHistory())
-                // api.get('/hire/recruiters')
-                //     .then((res) => {
-                //         const result = res.data.data;
-                //         setNotification(result);
-                //     })
-                //     .catch((err) => {
-                //         console.log(err.response);
-                //     });
             } else {
                 dispatch(workerHiringHistory())
-                // api.get('/hire/workers')
-                //     .then((res) => {
-                //         const result = res.data.data;
-                //         setNotification(result);
-                //     })
-                //     .catch((err) => {
-                //         console.log(err.response);
-                //     });
             }
         }
-    }, [role]);
+    }, [dispatch, role]);
+
+    useEffect(() => {
+        if (role === 'Recruiter') {
+            setMyProfile(recruiterProfile)
+        } else {
+            setMyProfile(workerProfile)
+        }
+    }, [role, recruiterProfile, workerProfile])
 
     const handleProfile = () => {
         if (role === 'Recruiter') {

@@ -18,6 +18,7 @@ import FormContainer from '../../components/module/FormContainer'
 import { useDispatch, useSelector } from 'react-redux';
 import { hireWorker } from '../../configs/redux/hireSlice'
 import { getProfile } from '../../configs/redux/workerSlice'
+import { getSkill } from '../../configs/redux/skillsSlice'
 
 
 const HireTalent = () => {
@@ -26,8 +27,8 @@ const HireTalent = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  // const [profile, setProfile] = useState({})
   const profile = useSelector((state) => state.worker.profile)
+  const skills = useSelector((state) => state.skills.skills)
 
   const [form, setForm] = useState({
     worker_id: id,
@@ -47,9 +48,6 @@ const HireTalent = () => {
     });
   };
 
-  // const [skills, setSkills] = useState([])
-
-
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -57,30 +55,9 @@ const HireTalent = () => {
     })
   }
 
-  // const getProfile = () => {
-  //   api.get(`/workers/${id}`)
-  //     .then((res) => {
-  //       const result = res.data.data
-  //       console.log(result);
-  //       setProfile(result)
-  //       setForm({ ...form, worker_id: id })
-  //     })
-  //     .catch((err) => {
-  //       console.log(err.response);
-  //     })
-  // }
-
   useEffect(() => {
     dispatch(getProfile(id))
-    // getProfile()
-    // api.get(`/skills/${id}`)
-    //   .then((res) => {
-    //     const result = res.data.data
-    //     setSkills(result)
-    //   })
-    //   .catch((err) => {
-    //     console.log(err.response);
-    //   })
+    dispatch(getSkill(id))
   }, [dispatch])
 
   const handleHire = (e) => {
@@ -102,18 +79,18 @@ const HireTalent = () => {
         <div className="flex gap-[30px] container mx-auto max-lg:flex-col">
 
           <div className="flex flex-col basis-4/12 gap-[34px] h-fit">
-            <div className="flex flex-col gap-5 items-center bg-[#FFFFFF] p-[30px] rounded-lg">
+            <div className="flex flex-col gap-10 items-center bg-[#FFFFFF] p-[30px] rounded-lg">
               <ProfileImage image={profile.photo} />
               <div className='flex flex-col gap-[13px] w-full'>
                 <ProfileName name={profile.name} />
                 <ProfileJob job={profile.position} />
                 <ProfileLocation location={profile.location} />
                 <ProfileStatus status={profile.workplace} />
+                <ProfileDescription>{profile.description}</ProfileDescription>
               </div>
-              <ProfileDescription>{profile.description}</ProfileDescription>
 
-              {/* {skills.length > 0 &&
-                <div className="flex flex-col gap-5">
+              {skills.length > 0 &&
+                <div className="flex flex-col gap-5 w-full">
                   <h3 className="font-semibold text-[22px] leading-6 text-[#1F2A36]">Skill</h3>
                   <ul className="flex flex-wrap gap-x-[10px] gap-y-[20px]">
                     {skills.map((item) => (
@@ -121,7 +98,7 @@ const HireTalent = () => {
                     ))}
                   </ul>
                 </div>
-              } */}
+              }
 
             </div>
 
