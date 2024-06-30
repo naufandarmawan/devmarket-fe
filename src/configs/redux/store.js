@@ -3,20 +3,27 @@ import skillsReducer from './skillsSlice';
 import portfolioReducer from './portfolioSlice';
 import experienceReducer from './experienceSlice';
 import authReducer from './authSlice';
-import assetSlice from './assetSlice';
-import hireSlice from './hireSlice';
-import recruiterSlice from './recruiterSlice';
-import workerSlice from './workerSlice';
+import assetReducer from './assetSlice';
+import hireReducer from './hireSlice';
+import recruiterReducer from './recruiterSlice';
+import workerReducer from './workerSlice';
+
+import { persistStore, persistReducer } from 'redux-persist';
+import workerPersistConfig  from './persistConfig';
+
+const persistedWorkerReducer = persistReducer(workerPersistConfig, workerReducer);
 
 export const store = configureStore({
   reducer: {
-    recruiter: recruiterSlice,
-    worker: workerSlice,
-    hire: hireSlice,
+    recruiter: recruiterReducer,
+    worker: persistedWorkerReducer,
+    hire: hireReducer,
     auth: authReducer,
-    asset: assetSlice,
+    asset: assetReducer,
     skills: skillsReducer,
     portfolio: portfolioReducer,
     experience: experienceReducer,
   },
 });
+
+export const persistor = persistStore(store);

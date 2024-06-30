@@ -22,7 +22,6 @@ import { getProfile } from '../../configs/redux/recruiterSlice'
 
 
 const ProfileCompany = () => {
-  // const [myProfile, setMyProfile] = useState({})
 
   const dispatch = useDispatch()
 
@@ -30,15 +29,6 @@ const ProfileCompany = () => {
 
   useEffect(() => {
     dispatch(getProfile())
-    // api.get(`/recruiters/profile`)
-    //   .then((res) => {
-    //     const result = res.data.data[0]
-    //     console.log(result);
-    //     setMyProfile(result)
-    //   })
-    //   .catch((err) => {
-    //     console.log(err.response);
-    //   })
 
   }, [dispatch])
 
