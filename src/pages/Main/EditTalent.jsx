@@ -41,26 +41,6 @@ const EditTalent = () => {
     gitlab: ''
   });
 
-  // const getProfile = () => {
-  //   api.get(`/workers/${id}`)
-  //     .then((res) => {
-  //       const result = res.data.data
-  //       console.log(result);
-  //       setProfile(result)
-  //       setForm({
-  //         name: result.name || '',
-  //         job_desk: result.job_desk || '',
-  //         domicile: result.domicile || '',
-  //         workplace: result.workplace || '',
-  //         description: result.description || '',
-  //         photo: result.photo || '',
-  //       })
-  //     })
-  //     .catch((err) => {
-  //       console.log(err.response);
-  //     })
-  // }
-
   useEffect(() => {
     dispatch(getMyProfile())
   }, [dispatch])
@@ -90,38 +70,7 @@ const EditTalent = () => {
   const handleSave = (e) => {
     e.preventDefault()
 
-    dispatch(updateProfile(form))
-
-    navigate('/talent/profile')
-    // console.log(form);
-
-    // if (form.photo !== profile.photo) {
-    //   api.put(`/workers/profile/photo/`, { photo: form.photo })
-    //     .then((res) => {
-    //       console.log(res)
-    //       // navigate(`/talent/profile/${id}`)
-    //     })
-    //     .catch((err) => {
-    //       console.log(err.response);
-    //       alert('Failed to update profile data')
-    //     })
-    // }
-
-    // api.put('/workers/profile', {
-    //   name: form.name,
-    //   job_desk: form.job_desk,
-    //   domicile: form.domicile,
-    //   workplace: form.workplace,
-    //   description: form.description,
-    // })
-    //   .then((res) => {
-    //     console.log(res)
-    //     // navigate(`/talent/profile/${id}`)
-    //   })
-    //   .catch((err) => {
-    //     console.log(err.response);
-    //     alert('Gagal untuk memperbarui data')
-    //   })
+    dispatch(updateProfile({form, navigate}))
   }
 
   const handleChange = (e) => {
@@ -131,35 +80,12 @@ const EditTalent = () => {
     })
   }
 
-  // const handleEdit = (e) => {
-  //   setForm({
-  //     ...form,
-  //     [e.target.name]: e.target.value
-  //   })
-  // }
-
   const handlePhoto = (e) => {
     const file = e.target.files[0]
     const formData = new FormData()
     formData.append('file', file)
 
     dispatch(updatePhoto(formData))
-    // api.post(`/upload`, formData)
-    //   .then((res) => {
-    //     const { file_url } = res.data.data
-    //     setForm({ ...form, photo: file_url })
-    //   })
-    //   .catch((err) => {
-    //     console.log(err.response);
-    //   });
-    // api.put(`/workers/profile/photo`, formData)
-    //   .then((res) => {
-    //     console.log(res);
-    //     // getProfile()
-    //   })
-    //   .catch((err) => {
-    //     console.log(err.response);
-    //   });
 
   }
 
@@ -179,7 +105,7 @@ const EditTalent = () => {
                 <input type="file" id="upload-photo" className='hidden' onChange={handlePhoto} />
                 <div className='flex gap-[6px] items-center cursor-pointer'>
                   <img src={GreyEdit} className='h-[16px]' />
-                  <p className='font-semibold text-[22px] text-[#9EA0A5]'>Edit</p>
+                  <p className='font-semibold text-[22px] text-[#9EA0A5]'>Change Photo</p>
                 </div>
               </label>
 
@@ -198,54 +124,54 @@ const EditTalent = () => {
 
           <div className="flex flex-col basis-8/12 gap-[34px] h-fit">
 
-            <FormSubContainer subTitle='Data diri'>
+            <FormSubContainer subTitle='Personal Information'>
               <Input
                 type='text'
                 value={form.name}
                 onChange={handleChange}
                 name="name"
-                label="Nama lengkap"
-                placeholder="Masukan nama lengkap"
+                label="Full Name"
+                placeholder="Enter your full name"
               />
               <Input
                 type='text'
                 value={form.position}
                 onChange={handleChange}
                 name="position"
-                label="Job desk"
-                placeholder="Masukan job desk"
+                label="Job Title"
+                placeholder="Enter your job title"
               />
               <Input
                 type='text'
                 value={form.location}
                 onChange={handleChange}
                 name="location"
-                label="Domisili"
-                placeholder="Masukan domisili"
+                label="Location"
+                placeholder="Enter your location"
               />
               <Input
                 type='text'
                 value={form.workplace}
                 onChange={handleChange}
                 name="workplace"
-                label="Tempat kerja"
-                placeholder="Masukan tempat kerja"
+                label="Workplace"
+                placeholder="Enter your workplace"
               />
               <Input
                 type='text'
                 value={form.description}
                 onChange={handleChange}
                 name="description"
-                label="Deskripsi singkat"
-                placeholder="Tuliskan deskripsi singkat"
+                label="Short Description"
+                placeholder="Write a short description"
               />
               <Input
                 type='tel'
                 value={form.phone}
                 onChange={handleChange}
                 name="phone"
-                label="No. Telepon"
-                placeholder="Masukan nomor telepon"
+                label="Phone Number"
+                placeholder="Enter your phone number"
               />
               <Input
                 type='text'
@@ -253,31 +179,31 @@ const EditTalent = () => {
                 onChange={handleChange}
                 name="instagram"
                 label="Instagram"
-                placeholder="Tuliskan nama instagram"
+                placeholder="Enter your Instagram username"
               />
               <Input
                 type='url'
                 value={form.github}
                 onChange={handleChange}
                 name="github"
-                label="Github"
-                placeholder="Tuliskan nama Github"
+                label="GitHub"
+                placeholder="Enter your GitHub username"
               />
               <Input
                 type='url'
                 value={form.gitlab}
                 onChange={handleChange}
                 name="gitlab"
-                label="Gitlab"
-                placeholder="Tuliskan nama Gitlab"
+                label="GitLab"
+                placeholder="Enter your GitLab username"
               />
             </FormSubContainer>
 
-            <FormSubContainer subTitle='Skill'>
+            <FormSubContainer subTitle='Skills'>
               <AddSkill />
             </FormSubContainer>
 
-            <FormSubContainer subTitle='Pengalaman Kerja'>
+            <FormSubContainer subTitle='Work Experience'>
               <AddExperience />
             </FormSubContainer>
 

@@ -3,7 +3,7 @@ import PurpleLogo from '../../assets/purple-logo.svg'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import GreyBell from '../../assets/grey-bell.svg'
 import GreyMail from '../../assets/grey-mail.svg'
-import Person1 from '../../assets/person-1.png'
+import UserThumbnail from '../../assets/user-thumbnail.jpg'
 import api from '../../configs/api'
 import { useDispatch, useSelector } from 'react-redux'
 import { checkRole, logout } from '../../configs/redux/authSlice'
@@ -79,9 +79,9 @@ const NavBar = () => {
                 <Link to='/'><img className="h-[35px]" src={PurpleLogo} alt="" /></Link>
                 <div className="flex gap-4">
                     <Link to='/login'><button
-                        className="px-5 py-[10px] border border-solid border-[#5E50A1] rounded-[4px] font-bold text-sm leading-6 text-[#5E50A1]">Masuk</button></Link>
+                        className="px-5 py-[10px] border border-solid border-[#5E50A1] rounded-[4px] font-bold text-sm leading-6 text-[#5E50A1]">Log In</button></Link>
                     <Link to='/register-talent'><button
-                        className="px-5 py-[10px] border border-solid border-[#5E50A1] rounded-[4px] font-bold text-sm leading-6 text-white bg-[#5E50A1]">Daftar</button></Link>
+                        className="px-5 py-[10px] border border-solid border-[#5E50A1] rounded-[4px] font-bold text-sm leading-6 text-white bg-[#5E50A1]">Sign Up</button></Link>
                 </div>
             </div>
         </div>
@@ -124,7 +124,7 @@ const NavBar = () => {
                         )}
                     </div>
                     <img src={GreyMail} />
-                    <img className='size-[32px] rounded-full cursor-pointer' src={myProfile.photo ? myProfile.photo : Person1} onClick={handleProfile} />
+                    <img className='size-[32px] rounded-full cursor-pointer' src={myProfile.photo ? myProfile.photo : UserThumbnail} onClick={handleProfile} />
                     <button onClick={handleLogOut}
                         className="px-5 py-[10px] border border-solid border-[#5E50A1] rounded-[4px] font-bold text-sm leading-6 text-white bg-[#5E50A1]">Log Out</button>
                 </div>

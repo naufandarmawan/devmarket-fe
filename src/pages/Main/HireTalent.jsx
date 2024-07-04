@@ -91,7 +91,7 @@ const HireTalent = () => {
 
               {skills.length > 0 &&
                 <div className="flex flex-col gap-5 w-full">
-                  <h3 className="font-semibold text-[22px] leading-6 text-[#1F2A36]">Skill</h3>
+                  <h3 className="font-semibold text-[22px] leading-6 text-[#1F2A36]">Skills</h3>
                   <ul className="flex flex-wrap gap-x-[10px] gap-y-[20px]">
                     {skills.map((item) => (
                       <Tag key={item.id} skill={item.skill_name} />
@@ -109,10 +109,10 @@ const HireTalent = () => {
 
           <div className="flex flex-col basis-8/12 gap-[52px] px-[30px] h-fit">
             <div className='flex flex-col basis-1/2'>
-              <FormContainer formTitle={`Hubungi ${profile.name}`} formDescription='Lorem ipsum dolor sit amet, consectetur adipiscing elit. In euismod ipsum et dui rhoncus auctor.'>
+              <FormContainer formTitle={`Contact ${profile.name}`} formDescription='Reach out to this talent for job opportunities or collaborations.'>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-1 w-full">
-                    <label className="font-normal text-xs text-[#9EA0A5] pl-[5px]">Tujuan tentang pesan ini</label>
+                    <label className="font-normal text-xs text-[#9EA0A5] pl-[5px]">Purpose of this message</label>
                     <select className='p-[15px] rounded-[4px] font-normal text-sm text-[#1F2A36] placeholder:text-[#858D96] outline-none border border-[#E2E5ED]' value={form.purpose}
                       onChange={handleSortChange}>
                       <option value="Full-time" selected>Full-time</option>
@@ -130,16 +130,16 @@ const HireTalent = () => {
                     value={form.name}
                     onChange={handleChange}
                     name="name"
-                    label="Nama lengkap"
-                    placeholder="Masukan nama lengkap"
+                    label="Full Name"
+                    placeholder="Enter full name"
                   />
                   <Input
                     type='text'
                     value={form.company}
                     onChange={handleChange}
                     name="company"
-                    label="Nama Perusahaan"
-                    placeholder="Masukan nama perusahaan"
+                    label="Company Name"
+                    placeholder="Enter company name"
                   />
                   <Input
                     type='email'
@@ -147,23 +147,23 @@ const HireTalent = () => {
                     onChange={handleChange}
                     name="email"
                     label="Email"
-                    placeholder="Masukan email"
+                    placeholder="Enter email"
                   />
                   <Input
                     type='tel'
                     value={form.phone}
                     onChange={handleChange}
                     name="phone"
-                    label="No Handpone"
-                    placeholder="Masukan no handpone"
+                    label="Phone Number"
+                    placeholder="Enter phone number"
                   />
                   <Input
                     type='textarea'
                     value={form.description}
                     onChange={handleChange}
                     name="description"
-                    label="Deskripsi"
-                    placeholder="Deskripsikan/jelaskan lebih detail "
+                    label="Description"
+                    placeholder="Provide a detailed description"
                   />
                 </div>
                 <div className='flex flex-col gap-[15px]'>

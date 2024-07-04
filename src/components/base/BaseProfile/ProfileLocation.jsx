@@ -5,7 +5,7 @@ const ProfileLocation = ({location}) => {
   return (
     <div className="flex gap-[11px]">
       <img src={GreyPin}/>
-      <p className="font-normal text-sm leading-5 text-[#9EA0A5]">{location ? location : 'Domicile'}</p>
+      <p className="font-normal text-sm leading-5 text-[#9EA0A5]">{location ? location : 'Location'}</p>
     </div>
   )
 }

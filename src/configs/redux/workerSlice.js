@@ -2,10 +2,11 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../api';
 import { toast } from 'react-toastify';
 
-export const register = createAsyncThunk('worker/register', async (form, { rejectWithValue }) => {
+export const register = createAsyncThunk('worker/register', async ({ form, navigate }, { rejectWithValue }) => {
     try {
         const response = await api.post('/workers/register', form);
         toast.success(response.data.message)
+        navigate('/login')
         return response.data;
     } catch (err) {
         return rejectWithValue(err.response.data);
@@ -22,9 +23,10 @@ export const getMyProfile = createAsyncThunk('worker/getMyProfile', async () => 
     return response.data.data;
 });
 
-export const updateProfile = createAsyncThunk('worker/updateProfile', async (form) => {
+export const updateProfile = createAsyncThunk('worker/updateProfile', async ({form, navigate}) => {
     const response = await api.put('/workers/profile', form);
     toast.success(response.data.message)
+    navigate('/talent/profile')
     return response.data.data;
 });
  

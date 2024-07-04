@@ -37,11 +37,11 @@ const AddSkill = () => {
                     className='w-full'
                     type='text'
                     label=''
-                    placeholder='Masukkan skill'
+                    placeholder='Enter skill'
                     value={form}
                     onChange={(e) => setForm(e.target.value)}
                 />
-                <Button variant='primary-yellow' onClick={handleSkill} text='Tambah' />
+                <Button variant='primary-yellow' onClick={handleSkill} text='Add' />
             </div>
             <ul className='flex gap-2'>
                 {mySkill.map((item) => (

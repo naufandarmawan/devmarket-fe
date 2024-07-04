@@ -93,24 +93,21 @@ function Carousel() {
                     image={Person1}
                     name='Harry Styles'
                     position='Web Developer'
-                    description='amet,
-                    consectetur adipiscing elit. In euismod ipsum et dui rhoncus auctor.'
+                    description="Thanks to Peworld Mobile, I've found exciting career opportunities that match my skills and ambitions. It's incredibly easy to use, and I can access job listings wherever I am."
                 />
 
                 <CarouselCard
                     image={Person2}
-                    name='Harry Styles'
+                    name='Niall Horan'
                     position='Web Developer'
-                    description='amet,
-                    consectetur adipiscing elit. In euismod ipsum et dui rhoncus auctor.'
+                    description='Peworld Mobile has transformed how I search for freelance projects. Its intuitive design and global reach have made it my go-to platform'
                 />
 
                 <CarouselCard
                     image={Person3}
-                    name='Harry Styles'
+                    name='Louis Tomlinson'
                     position='Web Developer'
-                    description='amet,
-                    consectetur adipiscing elit. In euismod ipsum et dui rhoncus auctor.'
+                    description="As a software engineer, I rely on Peworld Mobile to stay updated with the latest tech jobs. It's efficient and helps me connect with companies globally."
                 />
             </Slider>
         </div>

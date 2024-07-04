@@ -69,7 +69,7 @@ const MyProfileTalent = () => {
 
             {skills.length > 0 &&
               <div className="flex flex-col gap-5">
-                <h3 className="font-semibold text-[22px] leading-6 text-[#1F2A36]">Skill</h3>
+                <h3 className="font-semibold text-[22px] leading-6 text-[#1F2A36]">Skills</h3>
                 <ul className="flex flex-wrap gap-x-[10px] gap-y-[20px]">
                   {skills.map((item) => (
                     <Tag key={item.id} skill={item.skill_name} />

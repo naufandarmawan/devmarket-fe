@@ -25,27 +25,7 @@ const RegisterTalent = () => {
 
   const handleRegister = (e) => {
     e.preventDefault()
-
-    dispatch(register(form))
-    toast.success(`Register berhasil. Silakan Login`)
-    navigate('/login')
-
-    // api.post('/workers/register', {
-    //   email: form.email,
-    //   password: form.password,
-    //   name: form.name,
-    //   phone: form.phone
-    // })
-    //   .then((res) => {
-    //     console.log(res.response);
-    //     toast.success(`Register berhasil. Silakan Login`)
-    //     navigate('/login')
-    //   })
-    //   .catch((err) => {
-    //     console.log(err.response);
-    //     const error = err.response.data
-    //     toast.error(`Anda gagal register - ${error.message}`)
-    //   })
+    dispatch(register({form, navigate}))
   }
 
   const handleChange = (e) => {
@@ -62,11 +42,11 @@ const RegisterTalent = () => {
         <div className='container mx-auto flex gap-[70px] max-lg:flex-col'>
 
           <div className='flex flex-col basis-1/2'>
-            <HeroAuth>Temukan developer berbakat & terbaik di berbagai bidang keahlian</HeroAuth>
+            <HeroAuth>Discover talented developers in various fields of expertise.</HeroAuth>
           </div>
 
           <div className='flex flex-col basis-1/2'>
-            <FormContainer formTitle='Halo, Pewpeople' formDescription='Lorem ipsum dolor sit amet, consectetur adipiscing elit. In euismod ipsum et dui rhoncus auctor.'>
+            <FormContainer formTitle='Hello, Pewpeople' formDescription='Sign up to connect with the best opportunities in your field. Create your profile to get started.'>
               <div className="flex flex-col gap-4">
                 <Input
                   type='text'
@@ -74,7 +54,7 @@ const RegisterTalent = () => {
                   onChange={handleChange}
                   name="name"
                   label="Name"
-                  placeholder="Masukkan nama"
+                  placeholder="Enter your name"
                 />
                 <Input
                   type='email'
@@ -82,7 +62,7 @@ const RegisterTalent = () => {
                   onChange={handleChange}
                   name="email"
                   label="Email"
-                  placeholder="Masukkan email"
+                  placeholder="Enter your email"
                 />
                 <Input
                   type='tel'
@@ -90,7 +70,7 @@ const RegisterTalent = () => {
                   onChange={handleChange}
                   name="phone"
                   label="Phone"
-                  placeholder="Masukkan phone"
+                  placeholder="Enter your phone number"
                 />
                 <Input
                   type='password'
@@ -98,12 +78,12 @@ const RegisterTalent = () => {
                   onChange={handleChange}
                   name="password"
                   label="Password"
-                  placeholder="Masukkan password"
+                  placeholder="Enter your password"
                 />
               </div>
               <div className="flex flex-col gap-4">
-                <Button variant='primary-yellow' onClick={handleRegister} text='Daftar' />
-                <p className="text-center font-normal text-base text-[#1F2A36]">Anda sudah punya akun? <Link className="text-[#FBB017]" to="/login">Masuk disini</Link></p>
+                <Button variant='primary-yellow' onClick={handleRegister} text='Register' />
+                <p className="text-center font-normal text-base text-[#1F2A36]">Already have an account? <Link className="text-[#FBB017]" to="/login">Log in here</Link></p>
               </div>
             </FormContainer>
           </div>

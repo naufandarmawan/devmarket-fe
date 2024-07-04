@@ -1,10 +1,10 @@
 import React from 'react'
-import Person1 from '../../../assets/person-1.png'
+import UserThumbnail from '../../../assets/user-thumbnail.jpg'
 
 
 const ProfileImage = ({image, className, ...props}) => {
   return (
-    <img {...props} className={`size-[150px] rounded-full object-cover ${className}`} src={image ? image : Person1} alt="" />
+    <img {...props} className={`size-[150px] rounded-full object-cover ${className}`} src={image ? image : UserThumbnail} alt="" />
   )
 }
 

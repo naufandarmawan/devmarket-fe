@@ -81,7 +81,7 @@ const Home = () => {
       <div>
         <div className="px-[150px] py-[33px] bg-[#5E50A1]">
           <div className='container mx-auto'>
-            <h1 className='font-bold text-[28px] leading-5 text-white'>Top Jobs</h1>
+            <h1 className='font-bold text-[28px] leading-5 text-white'>Top Talents</h1>
           </div>
         </div>
 
@@ -90,21 +90,21 @@ const Home = () => {
 
             <div className="flex bg-white p-[8px] rounded-[8px] overflow-hidden shadow-[0px_1px_20px_0_rgba(197,197,197,0.25)]">
               <div className='flex w-full pr-[25px]'>
-                <Input onChange={handleSearchInputChange} value={searchInput} name='search' className='p-[20px] outline-none font-normal text-sm leading-5 text-[#1F2A36] placeholder:text-[#858D96] border-0' label='' type="text" placeholder='Search for any skill' />
+                <Input onChange={handleSearchInputChange} value={searchInput} name='search' className='p-[20px] outline-none font-normal text-sm leading-5 text-[#1F2A36] placeholder:text-[#858D96] border-0' label='' type="text" placeholder='Search for talents' />
                 <img onClick={handleSearch} className='w-6 cursor-pointer' src={GreySearch} />
               </div>
 
               <div className='flex border-l pl-[25px] gap-[25px]'>
                 <select className='outline-none font-normal text-sm leading-5 text-[#1F2A36]' value={selectedSort}
                   onChange={handleSortChange}>
-                  <option value="created_at" selected>Sort by created date</option>
-                  <option value="name">Sort by name</option>
-                  <option value="location">Sort by location</option>
+                  <option value="created_at" selected>Sort by Date Created</option>
+                  <option value="name">Sort by Name</option>
+                  <option value="location">Sort by Location</option>
                 </select>
                 <select className='outline-none font-normal text-sm leading-5 text-[#1F2A36]' value={selectedSortBy}
                   onChange={handleSortByChange}>
-                  <option value="DESC" selected>DESC</option>
-                  <option value="ASC">ASC</option>
+                  <option value="DESC" selected>Descending</option>
+                  <option value="ASC">Ascending</option>
                 </select>
                 <Button onClick={handleSearch} variant='primary-purple' text='Search' className="px-[30px] py-[15px] rounded-[4px] font-bold text-sm leading-6 text-white bg-[#5E50A1]">Search</Button>
               </div>

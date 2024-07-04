@@ -9,13 +9,12 @@ const Footer = () => {
             <div className="container mx-auto flex flex-col gap-[67px] max-lg:gap-6">
                 <div className="flex flex-col gap-[30px]">
                     <img className="h-[50px] w-fit max-lg:w-full" src={WhiteLogo} alt="" />
-                    <p className="w-1/3 font-normal text-lg leading-7 text-white max-lg:w-full max-lg:text-center">Lorem ipsum dolor sit amet, consectetur adipiscing
-                        elit. In euismod ipsum et dui rhoncus auctor.</p>
+                    <p className="w-1/3 font-normal text-lg leading-7 text-white max-lg:w-full max-lg:text-center">Peworld provides an innovative solution to streamline the recruitment process, allowing talent to access the latest career opportunities globally.</p>
                 </div>
                 <div className="flex justify-between pt-[30px] border-t border-white max-lg:flex-col max-lg:items-center max-lg:gap-3">
-                    <p className="font-normal text-lg leading-7 text-white max-lg:text-center">2020 Pewworld. All right reserved</p>
+                    <p className="font-normal text-lg leading-7 text-white max-lg:text-center">© 2024 Pewworld. All rights reserved.</p>
                     <div className="flex gap-[79px]">
-                        <Link to='/' className='font-normal text-lg leading-7 text-white'>Telepon</Link>
+                        <Link to='/' className='font-normal text-lg leading-7 text-white'>Phone</Link>
                         <Link to='mailto:naufandarmawan@gmail.com' className='font-normal text-lg leading-7 text-white'>Email</Link>
                     </div>
                 </div>

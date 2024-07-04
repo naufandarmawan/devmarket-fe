@@ -6,7 +6,6 @@ import Input from '../../components/base/Input'
 import Button from '../../components/base/Button'
 import api from '../../configs/api'
 import { ToastContainer, toast } from 'react-toastify';
-// import { registerRecruiter } from '../../configs/redux/action/authAction'
 import { useDispatch } from "react-redux"
 import { register } from '../../configs/redux/recruiterSlice'
 
@@ -27,28 +26,7 @@ const RegisterRecruiter = () => {
 
   const handleRegister = (e) => {
     e.preventDefault()
-    dispatch(register(form))
-    toast.success(`Register berhasil. Silakan Login`)
-    navigate('/login')
-    // dispatch(registerRecruiter(form, navigate))
-    // api.post('/recruiters/register', {
-    //   email: form.email,
-    //   password: form.password,
-    //   name: form.name,
-    //   company: form.company,
-    //   position: form.position,
-    //   phone: form.phone
-    // })
-    //   .then((res) => {
-    //     console.log(res.response);
-    //     toast.success(`Register berhasil. Silakan Login`)
-    //     navigate('/login')
-    //   })
-    //   .catch((err) => {
-    //     console.log(err.response);
-    //     const error = err.response.data
-    //     toast.error(`Anda gagal register - ${error.message}`)
-    //   })
+    dispatch(register({form, navigate}))
   }
 
   const handleChange = (e) => {
@@ -65,11 +43,11 @@ const RegisterRecruiter = () => {
         <div className='container mx-auto flex gap-[70px] max-lg:flex-col'>
 
           <div className='flex flex-col basis-1/2'>
-            <HeroAuth>Temukan developer berbakat & terbaik di berbagai bidang keahlian</HeroAuth>
+            <HeroAuth>Discover talented developers in various fields of expertise.</HeroAuth>
           </div>
 
           <div className='flex flex-col basis-1/2'>
-            <FormContainer formTitle='Halo, Pewpeople' formDescription='Lorem ipsum dolor sit amet, consectetur adipiscing elit. In euismod ipsum et dui rhoncus auctor.'>
+            <FormContainer formTitle='Hello, Pewpeople' formDescription='Join Peworld as a recruiter to discover top talent globally.'>
               <div className="flex flex-col gap-4">
                 <Input
                   type='text'
@@ -77,7 +55,7 @@ const RegisterRecruiter = () => {
                   onChange={handleChange}
                   name="name"
                   label="Name"
-                  placeholder="Masukkan nama"
+                  placeholder="Enter your name"
                 />
                 <Input
                   type='email'
@@ -85,23 +63,23 @@ const RegisterRecruiter = () => {
                   onChange={handleChange}
                   name="email"
                   label="Email"
-                  placeholder="Masukkan email"
+                  placeholder="Enter your email"
                 />
                 <Input
                   type='text'
                   value={form.company}
                   onChange={handleChange}
                   name="company"
-                  label="Perusahaan"
-                  placeholder="Masukan nama perusahaan"
+                  label="Company"
+                  placeholder="Enter your company name"
                 />
                 <Input
                   type='text'
                   value={form.position}
                   onChange={handleChange}
                   name="position"
-                  label="Jabatan"
-                  placeholder="Posisi di perusahaan Anda"
+                  label="Position"
+                  placeholder="Enter your position"
                 />
                 <Input
                   type='tel'
@@ -109,7 +87,7 @@ const RegisterRecruiter = () => {
                   onChange={handleChange}
                   name="phone"
                   label="Phone"
-                  placeholder="Masukkan phone"
+                  placeholder="Enter your phone number"
                 />
                 <Input
                   type='password'
@@ -117,12 +95,12 @@ const RegisterRecruiter = () => {
                   onChange={handleChange}
                   name="password"
                   label="Password"
-                  placeholder="Masukkan password"
+                  placeholder="Enter your password"
                 />
               </div>
               <div className="flex flex-col gap-4">
-                <Button variant='primary-yellow' onClick={handleRegister} text='Daftar' />
-                <p className="text-center font-normal text-base text-[#1F2A36]">Anda sudah punya akun? <Link className="text-[#FBB017]" to="/login">Masuk disini</Link></p>
+                <Button variant='primary-yellow' onClick={handleRegister} text='Register' />
+                <p className="text-center font-normal text-base text-[#1F2A36]">Already have an account? <Link className="text-[#FBB017]" to="/login">Login here</Link></p>
               </div>
             </FormContainer>
           </div>

@@ -7,7 +7,6 @@ import ProfileTalent from '../../pages/Main/ProfileTalent';
 import EditTalent from '../../pages/Main/EditTalent';
 import HireTalent from '../../pages/Main/HireTalent';
 import ProfileCompany from '../../pages/Main/ProfileCompany';
-import ResetPassword from '../../pages/Auth/ResetPassword';
 import RegisterTalent from '../../pages/Auth/RegisterTalent';
 import RegisterRecruiter from '../../pages/Auth/RegisterRecruiter';
 import EditCompany from '../../pages/Main/EditCompany';
@@ -23,7 +22,6 @@ const MainRouter = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register-talent" element={<RegisterTalent />} />
                 <Route path="/register-recruiter" element={<RegisterRecruiter />} />
-                <Route path="/resetpassword" element={<ResetPassword />} />
                 <Route path="/talent" element={
                     <ProtectedRoute>
                         <Home />

@@ -110,7 +110,7 @@ const EditCompany = () => {
                 <input type="file" id="upload-photo" className='hidden' onChange={handleFile} />
                 <div className='flex gap-[6px] items-center cursor-pointer'>
                   <img src={GreyEdit} className='h-[16px]' />
-                  <p className='font-semibold text-[22px] text-[#9EA0A5]'>Edit</p>
+                  <p className='font-semibold text-[22px] text-[#9EA0A5]'>Change Photo</p>
                 </div>
               </label>
               <div className='flex flex-col gap-[13px] w-full'>
@@ -126,46 +126,46 @@ const EditCompany = () => {
           </div>
 
           <div className="flex flex-col basis-8/12 gap-[34px] h-fit">
-            <FormSubContainer subTitle='Data diri'>
+            <FormSubContainer subTitle='Personal Information'>
               <Input
                 type='text'
                 value={form.company}
                 onChange={handleChange}
                 name="company"
-                label="Nama Perusahaan"
-                placeholder="Masukan nama perusahan"
+                label="Company Name"
+                placeholder="Enter company name"
               />
               <Input
                 type='text'
                 value={form.industry}
                 onChange={handleChange}
                 name="industry"
-                label="Bidang"
-                placeholder="Masukan bidang perusahaan ex : Financial"
+                label="Industry"
+                placeholder="Enter industry, e.g., Financial"
               />
               <Input
                 type='text'
                 value={form.location}
                 onChange={handleChange}
                 name="location"
-                label="Kota"
-                placeholder="Masukan kota"
+                label="Location"
+                placeholder="Enter location"
               />
               <Input
                 type='text'
                 value={form.description}
                 onChange={handleChange}
                 name="description"
-                label="Deskripsi singkat"
-                placeholder="Tuliskan deskripsi singkat"
+                label="Brief Description"
+                placeholder="Write a brief description"
               />
               <Input
                 type='text'
                 value={form.name}
                 onChange={handleChange}
                 name="name"
-                label="Nama Lengkap"
-                placeholder="Masukan nama lengkap"
+                label="Full Name"
+                placeholder="Enter full name"
               />
               {/* <Input
                 type='text'
@@ -181,23 +181,23 @@ const EditCompany = () => {
                 onChange={handleChange}
                 name="instagram"
                 label="Instagram"
-                placeholder="Masukan nama Instagram"
+                placeholder="Enter Instagram handle"
               />
               <Input
                 type='tel'
                 value={form.phone}
                 onChange={handleChange}
                 name="phone"
-                label="Nomor Telepon"
-                placeholder="Masukan nomor telepon"
+                label="Phone Number"
+                placeholder="Enter phone number"
               />
               <Input
                 type='url'
                 value={form.linkedin}
                 onChange={handleChange}
                 name="linkedin"
-                label="Linkedin"
-                placeholder="Masukan nama Linkedin"
+                label="LinkedIn"
+                placeholder="Enter LinkedIn profile"
               />
 
             </FormSubContainer>

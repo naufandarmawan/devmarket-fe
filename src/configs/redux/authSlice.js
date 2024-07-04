@@ -8,12 +8,12 @@ export const login = createAsyncThunk('auth/login', async ({ form, navigate }, {
     const { token, refreshToken } = response.data.data;
     localStorage.setItem('token', token);
     localStorage.setItem('refreshToken', refreshToken);
-    toast.success(`Login berhasil. Selamat datang!`);
+    toast.success(response.data.message);
     navigate('/');
     return response.data.data;
   } catch (err) {
     const error = err.response.data;
-    toast.error(`Anda gagal login - ${error.message}`);
+    toast.error(`Login Failed - ${error.message}`);
     return rejectWithValue(error);
   }
 });
@@ -23,8 +23,9 @@ export const checkRole = createAsyncThunk('auth/checkRole', async (_, { rejectWi
     const response = await api.get('/auth/checkrole');
     return response.data.data[0].role;
   } catch (err) {
+    console.log(err);
     const error = err.response.data;
-    toast.error(`${error}`);
+    toast.error(`${error.message}`);
     return rejectWithValue(error);
   }
 });

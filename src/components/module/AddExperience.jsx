@@ -3,7 +3,7 @@ import Input from '../base/Input'
 import api from '../../configs/api'
 import Button from '../base/Button'
 import ExperienceContent from '../base/ExperienceContent'
-import CompanyLogo from '../../assets/company-logo.png'
+import CompanyLogo from '../../assets/company-logo2.svg'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { addExperience, deleteExperience, getMyExperience, updateExperience } from '../../configs/redux/experienceSlice'
@@ -83,15 +83,15 @@ const AddExperience = () => {
                         value={form.position}
                         onChange={handleChange}
                         name="position"
-                        label="Posisi"
-                        placeholder="web developer"
+                        label="Position"
+                        placeholder="Web Developer"
                     />
                     <Input
                         type='text'
                         value={form.company}
                         onChange={handleChange}
                         name="company"
-                        label="Nama perusahaan"
+                        label="Company Name"
                         placeholder="PT Harus bisa" />
                     <div className='flex gap-[15px]'>
                         <Input
@@ -99,7 +99,7 @@ const AddExperience = () => {
                             value={form.start_date}
                             onChange={handleChange}
                             name="start_date"
-                            label="Tanggal Mulai"
+                            label="Start Date"
                             placeholder="2022-01-15"
                         />
                         <Input
@@ -107,7 +107,7 @@ const AddExperience = () => {
                             value={form.end_date}
                             onChange={handleChange}
                             name="end_date"
-                            label="Tanggal Berakhir"
+                            label="End Date"
                             placeholder="2022-06-30"
                         />
                     </div>
@@ -116,14 +116,14 @@ const AddExperience = () => {
                         value={form.description}
                         onChange={handleChange}
                         name="description"
-                        label="Deskripsi singkat"
-                        placeholder="Deskripsikan pekerjaan anda"
+                        label="Brief Description"
+                        placeholder="Describe your job"
                     />
                 </div >
                 <div className='border-t border-[#E2E5ED] pt-[30px]'>
                     <Button
                         className='w-full'
-                        text={form.id ? 'Perbaharui Pengalaman Kerja' : 'Tambah Pengalaman Kerja'}
+                        text={form.id ? 'Update Work Experience' : 'Add Work Experience'}
                         onClick={handleAddExperience}
                     />
                 </div>

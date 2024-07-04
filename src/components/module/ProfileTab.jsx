@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import CompanyLogo from '../../assets/company-logo.png'
+import CompanyLogo from '../../assets/company-logo2.svg'
 import PortfolioContent from '../base/PortfolioContent'
 import ExperienceContent from '../base/ExperienceContent'
 // import { useParams } from 'react-router-dom'
@@ -98,11 +98,11 @@ const ProfileTab = ({ user }) => {
         <div className='flex flex-col gap-[34px]'>
             <ul className='flex gap-[30px] max-lg:overflow-x-scroll'>
                 <li className='flex flex-col gap-[11px] cursor-pointer' onClick={() => handleToggle(1)}>
-                    <h1 className={toggle === 1 ? 'font-semibold text-[22px] text-[#1F2A36] max-lg:text-base' : 'font-semibold text-[22px] text-[#9EA0A5] max-lg:text-base'}>Portofolio</h1>
+                    <h1 className={toggle === 1 ? 'font-semibold text-[22px] text-[#1F2A36] max-lg:text-base' : 'font-semibold text-[22px] text-[#9EA0A5] max-lg:text-base'}>Portfolio</h1>
                     <div className={toggle === 1 ? 'bg-[#5E50A1] h-1 rounded-full' : 'bg-transparent h-1 rounded-full'}></div>
                 </li>
                 <li className='flex flex-col gap-[11px] cursor-pointer' onClick={() => handleToggle(2)}>
-                    <h1 className={toggle === 2 ? 'font-semibold text-[22px] text-[#1F2A36] max-lg:text-base' : 'font-semibold text-[22px] text-[#9EA0A5] max-lg:text-base'}>Pengalaman Kerja</h1>
+                    <h1 className={toggle === 2 ? 'font-semibold text-[22px] text-[#1F2A36] max-lg:text-base' : 'font-semibold text-[22px] text-[#9EA0A5] max-lg:text-base'}>Work Experience</h1>
                     <div className={toggle === 2 ? 'bg-[#5E50A1] h-1 rounded-full' : 'bg-transparent h-1 rounded-full'}></div>
                 </li>
             </ul>

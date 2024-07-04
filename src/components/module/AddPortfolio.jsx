@@ -93,7 +93,7 @@ const AddPortfolio = () => {
                         value={form.name}
                         onChange={handleChange}
                         name="name"
-                        label="Nama Aplikasi"
+                        label="Application Name"
                         placeholder="Gojek"
                     />
                     <Input
@@ -101,11 +101,11 @@ const AddPortfolio = () => {
                         value={form.link}
                         onChange={handleChange}
                         name="link"
-                        label="Link Repo"
+                        label="Repository Link"
                         placeholder="Github" />
 
                     <div className='flex flex-col gap-1'>
-                        <label className='font-normal text-xs text-[#9EA0A5] pl-[5px]'>Tipe</label>
+                        <label className='font-normal text-xs text-[#9EA0A5] pl-[5px]'>Type</label>
                         <div className='flex items-center gap-4'>
                             <label className={form.type === 'Aplikasi Mobile' ? "flex items-center border border-[#E2E5ED] rounded-lg p-[15px] font-semibold text-sm text-[#46505C] accent-[#5E50A1]" : "flex items-center p-[15px] font-normal text-sm text-[#9EA0A5]"}>
                                 <input
@@ -133,14 +133,14 @@ const AddPortfolio = () => {
                     </div>
 
                     <label htmlFor="upload-file" className=" flex flex-col gap-1 w-full">
-                        <p className='font-normal text-xs text-[#9EA0A5] pl-[5px]'>Upload gambar</p>
+                        <p className='font-normal text-xs text-[#9EA0A5] pl-[5px]'>Upload Image</p>
                         <input type="file" id="upload-file" className='hidden' onChange={handleFile} />
                         <div style={{ backgroundImage: `url(${form.image})` }} className={form.image ? "rounded-lg w-full cursor-pointer h-80 bg-cover" : "p-12 flex flex-col items-center gap-5 border border-[#E2E5ED] rounded-lg w-full cursor-pointer"}>
                             <div className={form.image ? 'hidden' : 'flex flex-col gap-10'}>
                                 <div className="flex flex-col items-center gap-3">
                                     <img src={GreyUpload} className='size-[114px]' />
-                                    <p className="font-normal text-sm text-[#1F2A36]">Drag & Drop untuk Upload Gambar Aplikasi</p>
-                                    <p className="font-normal text-xs text-[#1F2A36]">Atau cari untuk mengupload file dari direktorimu.</p>
+                                    <p className="font-normal text-sm text-[#1F2A36]">Drag & Drop to Upload Application Image</p>
+                                    <p className="font-normal text-xs text-[#1F2A36]">Or browse to upload a file from your directory.</p>
                                 </div>
                                 <div className='flex gap-10'>
                                     <div className="flex items-center gap-3">
@@ -166,7 +166,7 @@ const AddPortfolio = () => {
                 <div className='border-t border-[#E2E5ED] pt-[30px]'>
                     <Button
                         className='w-full'
-                        text={form.id ? 'Perbaharui Portfolio Kerja' : 'Tambah Portfolio Kerja'}
+                        text={form.id ? 'Update Portfolio' : 'Add Portfolio'}
                         onClick={handleAdd}
                     />
                 </div>

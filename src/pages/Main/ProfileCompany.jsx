@@ -64,7 +64,7 @@ const ProfileCompany = () => {
                 <ProfileJob job={myProfile.industry} />
                 <ProfileLocation location={myProfile.location} />
               </div>
-              <ProfileDescription>{myProfile.description || 'Deskripsi Perusahaan:'}</ProfileDescription>
+              <ProfileDescription>{myProfile.description || 'Company Description:'}</ProfileDescription>
               <Button
               variant='primary-purple' 
               onClick={handleEdit}

@@ -24,19 +24,6 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault()
     dispatch(login({form, navigate}))
-    // api.post('/auth/login', form)
-    //   .then((res) => {
-    //     const { token, refreshToken } = res.data.data
-    //     localStorage.setItem('token', token)
-    //     localStorage.setItem('refreshToken', refreshToken)
-    //     toast.success(`Login berhasil. Selamat datang!`)
-    //     navigate('/')
-    //   })
-    //   .catch((err) => {
-    //     console.log(err.response);
-    //     const error = err.response.data
-    //     toast.error(`Anda gagal login - ${error.message}`)
-    //   })
   }
 
   const handleChange = (e) => {
@@ -53,11 +40,11 @@ const Login = () => {
         <div className='container mx-auto flex gap-[70px] max-lg:flex-col'>
 
           <div className='flex flex-col basis-1/2'>
-            <HeroAuth>Temukan developer berbakat & terbaik di berbagai bidang keahlian</HeroAuth>
+            <HeroAuth>Discover talented and top-notch developers across various fields of expertise.</HeroAuth>
           </div>
 
           <div className='flex flex-col basis-1/2'>
-            <FormContainer formTitle='Halo, Pewpeople' formDescription='Lorem ipsum dolor sit amet, consectetur adipiscing elit. In euismod ipsum et dui rhoncus auctor.'>
+            <FormContainer formTitle='Hello, Pewpeople' formDescription='Discover talented and skilled developers in various fields of expertise.'>
               <div className="flex flex-col gap-4">
                 <Input
                   type='email'
@@ -65,7 +52,7 @@ const Login = () => {
                   onChange={handleChange}
                   name="email"
                   label="Email"
-                  placeholder="Masukkan email"
+                  placeholder="Enter your email"
                 />
                 <Input
                   type='password'
@@ -73,16 +60,16 @@ const Login = () => {
                   onChange={handleChange}
                   name="password"
                   label="Password"
-                  placeholder="Masukkan password"
+                  placeholder="Enter your password"
                 />
               </div>
               <div className="flex flex-col gap-4">
-                <Link className="text-end font-normal text-base text-[#1F2A36]" to="/resetpassword">Lupa kata sandi?</Link>
+                <Link className="text-end font-normal text-base text-[#1F2A36]" to="/resetpassword">Forgot your password?</Link>
                 {/* <Link className="text-end font-normal text-base text-[#FBB017]" to="/resetpassword">Lupa kata sandi?</Link> */}
-                <Button variant='primary-yellow' onClick={handleLogin} text='Masuk' />
-                <p className="flex flex-col gap-2 text-center font-normal text-base text-[#1F2A36]">Anda belum punya akun?
-                  <Link className="text-[#FBB017]" to="/register-talent">Daftar sebagai talent</Link>
-                  <Link className="text-[#FBB017]" to="/register-recruiter">Daftar sebagai recruiter</Link>
+                <Button variant='primary-yellow' onClick={handleLogin} text='Log In' />
+                <p className="flex flex-col gap-2 text-center font-normal text-base text-[#1F2A36]">Don't have an account yet?
+                  <Link className="text-[#FBB017]" to="/register-talent">Register as talent</Link>
+                  <Link className="text-[#FBB017]" to="/register-recruiter">Register as recruiter</Link>
                 </p>
               </div>
             </FormContainer>

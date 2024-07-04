@@ -13,15 +13,16 @@ export const updateProfile = createAsyncThunk('recruiter/updateProfile', async (
     return response.data;
 });
 
-export const register = createAsyncThunk('recruiter/register', async (form, { rejectWithValue }) => {
+export const register = createAsyncThunk('recruiter/register', async ({form, navigate}, { rejectWithValue }) => {
     try {
-      const response = await api.post('/recruiters/register', form);
-      toast.success(response.data.message)
-      return response.data;
+        const response = await api.post('/recruiters/register', form);
+        toast.success(response.data.message)
+        navigate('/login')
+        return response.data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+        return rejectWithValue(err.response.data);
     }
-  });
+});
 
 const recruiterSlice = createSlice({
     name: 'recruiter',
