@@ -32,12 +32,13 @@ export const checkRole = createAsyncThunk('auth/checkRole', async (_, { rejectWi
 
 export const logout = createAsyncThunk('auth/logout', async ({ navigate }, { rejectWithValue }) => {
   try {
-    const response = await api.get('/auth/logout');
+    // const response = await api.get('/auth/logout');
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
-    toast.success(response.data.message);
+    // toast.success(response.data.message);
+    toast.success('Logout Success');
     navigate('/login')
-    return response.data.data
+    return 
   } catch (err) {
     const error = err.response.data;
     toast.error(error.message);
